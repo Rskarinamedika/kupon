@@ -305,8 +305,10 @@ document.getElementById("submit-admin").onclick = () => {
     }
 };
 
+// --- BAGIAN LOGIKA ADMIN (PADA SCRIPT) ---
+
 function startAdminMonitor() {
-    // 1. Listen for Logs (The List)
+    // 1. Listen for Logs
     db.ref('logs').on('value', snap => {
         const tbody = document.getElementById("admin-table-body");
         const empty = document.getElementById("empty-table");
@@ -316,7 +318,6 @@ function startAdminMonitor() {
             allLogs.unshift({ id: child.key, ...child.val() });
         });
 
-        // Notify if new data arrives
         if(allLogs.length > lastLogCount) {
             if(lastLogCount !== 0) {
                 const latest = allLogs[0];
@@ -326,84 +327,91 @@ function startAdminMonitor() {
             lastLogCount = allLogs.length;
         }
 
-        if(allLogs.length === 0) empty.classList.remove('hidden');
-        else empty.classList.add('hidden');
-
-        renderAdminTable(allLogs);
+        if(allLogs.length === 0) {
+            empty.classList.remove('hidden');
+            tbody.innerHTML = ""; 
+        } else {
+            empty.classList.add('hidden');
+        }
+        
+        // Render tabel setiap kali ada perubahan data
+        renderAdminTable();
     });
 
-    // 2. Listen for User Stats (To fill the 6 boxes)
+    // 2. Listen for User Stats
     db.ref('users').on('value', snap => {
         let uniqueStaff = 0;
         let totalCoupons = 0;
-        let counts = { Bakso:0, Dimsum:0, "Es Gayung":0, "Sate & Ketan":0 };
+        let mCounts = { "Bakso":0, "Dimsum":0, "Es Gayung":0, "Sate & Ketan":0 };
 
         snap.forEach(child => {
             const u = child.val();
             uniqueStaff++;
-            if(u.bakso) { counts.Bakso++; totalCoupons++; }
-            if(u.dimsum) { counts.Dimsum++; totalCoupons++; }
-            if(u.es_gayung) { counts.Es_Gayung++; totalCoupons++; } // Note: Check consistency in naming
-            if(u.sate) { counts.Sate++; totalCoupons++; }
+            if(u.bakso) { mCounts["Bakso"]++; totalCoupons++; }
+            if(u.dimsum) { mCounts["Dimsum"]++; totalCoupons++; }
+            if(u.es_gayung) { mCounts["Es Gayung"]++; totalCoupons++; }
+            if(u.sate) { mCounts["Sate & Ketan"]++; totalCoupons++; }
         });
 
-        // Update Boxes
         document.getElementById("stat-unique").textContent = uniqueStaff;
         document.getElementById("stat-total").textContent = totalCoupons;
+        document.getElementById("stat-bakso").textContent = mCounts["Bakso"];
+        document.getElementById("stat-dimsum").textContent = mCounts["Dimsum"];
+        document.getElementById("stat-gayung").textContent = mCounts["Es Gayung"];
+        document.getElementById("stat-sate").textContent = mCounts["Sate & Ketan"];
+        document.getElementById("table-count").textContent = `${totalCoupons} data`;
         
-        // Count from Logs instead for precise per-menu
-        db.ref('logs').once('value', lSnap => {
-            let mCounts = { "Bakso":0, "Dimsum":0, "Es Gayung":0, "Sate & Ketan":0 };
-            lSnap.forEach(l => { mCounts[l.val().menu]++; });
-            document.getElementById("stat-bakso").textContent = mCounts["Bakso"];
-            document.getElementById("stat-dimsum").textContent = mCounts["Dimsum"];
-            document.getElementById("stat-gayung").textContent = mCounts["Es Gayung"];
-            document.getElementById("stat-sate").textContent = mCounts["Sate & Ketan"];
-            document.getElementById("table-count").textContent = `${allLogs.length} data`;
-        });
+        renderAdminTable();
     });
 }
 
-function renderAdminTable(data) {
+function renderAdminTable() {
     const tbody = document.getElementById("admin-table-body");
-    // Group logs by NIP to show icons in one row like the original design
-    db.ref('users').once('value', uSnap => {
-        const users = [];
-        uSnap.forEach(u => { users.push(u.val()); });
-        
-        const query = document.getElementById("search-input").value.toLowerCase();
-        const filtered = users.filter(u => (u.nama||'').toLowerCase().includes(query) || (u.nip||'').includes(query));
+    const query = document.getElementById("search-input").value.toLowerCase();
 
-        tbody.innerHTML = filtered.map(u => {
-            const check = v => v ? '<span class="text-green-400">✅</span>' : '<span class="opacity-20">—</span>';
-            return `<tr class="border-b border-white/5 hover:bg-white/5 transition">
-                <td class="px-4 py-4">${u.nama}</td>
-                <td class="px-4 py-4 text-center font-mono">${u.nip}</td>
-                <td class="px-2 py-4 text-center">${check(u.bakso)}</td>
-                <td class="px-2 py-4 text-center">${check(u.dimsum)}</td>
-                <td class="px-2 py-4 text-center">${check(u.es_gayung)}</td>
-                <td class="px-2 py-4 text-center">${check(u.sate)}</td>
-                <td class="px-4 py-4 text-right opacity-50 text-xs">Aktif</td>
-                <td class="px-4 py-4 text-center">
-                    <button onclick="hapusUser('${u.nip}')" class="text-red-400 hover:text-red-200 text-xs font-bold">Reset</button>
-                </td>
-            </tr>`;
-        }).join("");
+    db.ref('users').once('value', uSnap => {
+        let html = "";
+        uSnap.forEach(child => {
+            const u = child.val();
+            if ((u.nama || '').toLowerCase().includes(query) || (u.nip || '').includes(query)) {
+                const check = v => v ? '<span class="text-green-400 font-black">✅</span>' : '<span class="opacity-10">—</span>';
+                html += `
+                <tr class="border-b border-white/5 hover:bg-white/5 transition">
+                    <td class="px-4 py-4 text-white">${u.nama}</td>
+                    <td class="px-4 py-4 text-center font-mono text-yellow-400">${u.nip}</td>
+                    <td class="px-2 py-4 text-center">${check(u.bakso)}</td>
+                    <td class="px-2 py-4 text-center">${check(u.dimsum)}</td>
+                    <td class="px-2 py-4 text-center">${check(u.es_gayung)}</td>
+                    <td class="px-2 py-4 text-center">${check(u.sate)}</td>
+                    <td class="px-4 py-4 text-right opacity-50 text-xs">Aktif</td>
+                    <td class="px-4 py-4 text-center">
+                        <button onclick="hapusUser('${u.nip}')" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">
+                            Reset
+                        </button>
+                    </td>
+                </tr>`;
+            }
+        });
+        tbody.innerHTML = html;
     });
 }
 
-document.getElementById("search-input").oninput = () => renderAdminTable(allLogs);
-
+// FUNGSI RESET DATA YANG DIPERBAIKI
 window.hapusUser = (nip) => {
-    if(confirm(`Reset data penukaran untuk NIP ${nip}?`)) {
+    if(confirm(`Hapus seluruh data penukaran untuk NIP ${nip}?`)) {
+        // 1. Hapus status kupon di tabel users
         db.ref('users/' + nip).remove();
-        // Also remove their logs
+        
+        // 2. Cari dan hapus semua log yang terkait dengan NIP ini
         db.ref('logs').once('value', snap => {
             snap.forEach(child => {
-                if(child.val().nip === nip) db.ref('logs/' + child.key).remove();
+                if(child.val().nip === nip) {
+                    db.ref('logs/' + child.key).remove();
+                }
             });
         });
-        showToast("Data Pegawai di-reset", "success");
+        
+        showToast("Data NIP " + nip + " berhasil dibersihkan", "success");
     }
 };
 
