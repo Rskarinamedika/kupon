@@ -307,8 +307,9 @@ document.getElementById("submit-admin").onclick = () => {
 
 // --- BAGIAN LOGIKA ADMIN (PADA SCRIPT) ---
 
+// --- SAAT MEMULAI MONITOR ADMIN ---
 function startAdminMonitor() {
-    // 1. Listen for Logs
+    // Listener untuk Logs (Riwayat)
     db.ref('logs').on('value', snap => {
         const tbody = document.getElementById("admin-table-body");
         const empty = document.getElementById("empty-table");
@@ -318,6 +319,7 @@ function startAdminMonitor() {
             allLogs.unshift({ id: child.key, ...child.val() });
         });
 
+        // Notifikasi Suara & Popup jika ada data baru
         if(allLogs.length > lastLogCount) {
             if(lastLogCount !== 0) {
                 const latest = allLogs[0];
@@ -329,16 +331,14 @@ function startAdminMonitor() {
 
         if(allLogs.length === 0) {
             empty.classList.remove('hidden');
-            tbody.innerHTML = ""; 
+            tbody.innerHTML = "";
         } else {
             empty.classList.add('hidden');
         }
-        
-        // Render tabel setiap kali ada perubahan data
         renderAdminTable();
     });
 
-    // 2. Listen for User Stats
+    // Listener untuk Statistik & Data User
     db.ref('users').on('value', snap => {
         let uniqueStaff = 0;
         let totalCoupons = 0;
@@ -360,14 +360,14 @@ function startAdminMonitor() {
         document.getElementById("stat-gayung").textContent = mCounts["Es Gayung"];
         document.getElementById("stat-sate").textContent = mCounts["Sate & Ketan"];
         document.getElementById("table-count").textContent = `${totalCoupons} data`;
-        
         renderAdminTable();
     });
 }
 
+// --- FUNGSI RENDER TABEL ---
 function renderAdminTable() {
     const tbody = document.getElementById("admin-table-body");
-    const query = document.getElementById("search-input").value.toLowerCase();
+    const query = (document.getElementById("search-input").value || "").toLowerCase();
 
     db.ref('users').once('value', uSnap => {
         let html = "";
@@ -386,7 +386,7 @@ function renderAdminTable() {
                     <td class="px-4 py-4 text-right opacity-50 text-xs">Aktif</td>
                     <td class="px-4 py-4 text-center">
                         <button onclick="hapusUser('${u.nip}')" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">
-                            Reset
+                            Hapus
                         </button>
                     </td>
                 </tr>`;
@@ -396,22 +396,27 @@ function renderAdminTable() {
     });
 }
 
-// FUNGSI RESET DATA YANG DIPERBAIKI
+// --- FUNGSI HAPUS SATU DATA (RESET PER ORANG) ---
 window.hapusUser = (nip) => {
-    if(confirm(`Hapus seluruh data penukaran untuk NIP ${nip}?`)) {
-        // 1. Hapus status kupon di tabel users
+    if(confirm(`Hapus data penukaran untuk NIP ${nip}?`)) {
         db.ref('users/' + nip).remove();
-        
-        // 2. Cari dan hapus semua log yang terkait dengan NIP ini
         db.ref('logs').once('value', snap => {
             snap.forEach(child => {
-                if(child.val().nip === nip) {
-                    db.ref('logs/' + child.key).remove();
-                }
+                if(child.val().nip === nip) db.ref('logs/' + child.key).remove();
             });
         });
-        
-        showToast("Data NIP " + nip + " berhasil dibersihkan", "success");
+        showToast("Data NIP " + nip + " dibersihkan", "success");
+    }
+};
+
+// --- FUNGSI RESET SEMUA DATA (MEMBERSIHKAN DARI NOL) ---
+// Panggil fungsi ini dari console browser atau hubungkan ke tombol baru jika perlu
+window.resetSemuaData = () => {
+    if(confirm("PERINGATAN: Hapus SELURUH data tabel dan statistik dari nol?")) {
+        db.ref('users').remove();
+        db.ref('logs').remove();
+        lastLogCount = 0;
+        showToast("Seluruh database telah dikosongkan!", "success");
     }
 };
 
