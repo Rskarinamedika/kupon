@@ -21,7 +21,6 @@
     .card-hover:hover { transform: translateY(-8px) scale(1.05); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .card-hover:hover { animation: neon-glow 1.5s ease-in-out infinite; }
     body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; background: #1a8a6e; }
-    /* Custom Scrollbar untuk Popup */
     .custom-scroll::-webkit-scrollbar { width: 6px; }
     .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #1a8a6e; border-radius: 10px; }
@@ -38,7 +37,6 @@
         <h2 class="text-2xl font-900 text-red-800 uppercase tracking-tight">⚠️ Harap Diperhatikan</h2>
         <p class="text-yellow-500 font-700 text-sm">Sebelum Penukaran Kupon</p>
       </div>
-      
       <div class="overflow-y-auto pr-2 custom-scroll space-y-4 text-yellow-700 font-700 text-sm md:text-base leading-relaxed">
         <p>1. Kupon hanya berlaku saat acara HUT RSU Karina Medika berlangsung</p>
         <p>2. Setiap pegawai mendapatkan 4 kupon digital makanan maupun minuman</p>
@@ -52,7 +50,6 @@
         <p>10. Pegawai dapat menukarkan kupon digital sebanyak satu-persatu diwaktu yang berbeda</p>
         <p>11. Pengambilan dapat diwakilkan temannya dengan perangkat yang berbeda dan teknis yang sama</p>
       </div>
-
       <button onclick="closePopup()" class="w-full mt-8 py-4 bg-[#1a8a6e] hover:bg-[#156d57] text-white font-900 rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
         SAYA MENGERTI & LANJUTKAN <i data-lucide="check-circle" class="w-5 h-5"></i>
       </button>
@@ -60,7 +57,6 @@
   </div>
 
   <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a8a6e 0%, #1b7a8a 50%, #1a6e5a 100%);">
-   
    <div id="toast" class="fixed top-4 right-4 z-[9999] hidden"></div>
 
    <div id="page-login" class="min-h-full flex items-center justify-center p-4">
@@ -78,7 +74,7 @@
        </div>
        <div>
         <label class="block text-white font-700 text-sm mb-1"><i data-lucide="hash" class="inline w-4 h-4 mr-1"></i>Nomor Induk Pegawai</label>
-        <input id="inp-nip" type="text" required maxlength="6" pattern="000\d{3}" inputmode="numeric" placeholder="NIP 6 Angka" class="w-full px-4 py-3 rounded-xl bg-white/90 text-center tracking-widest text-lg font-bold outline-none focus:ring-2 focus:ring-yellow-400 transition">
+        <input id="inp-nip" type="text" required maxlength="6" pattern="000\d{3}" inputmode="numeric" placeholder="NIP 6 Angka" class="w-full px-4 py-3 rounded-xl bg-white/90 text-gray-800 font-600 outline-none focus:ring-2 focus:ring-yellow-400 transition">
        </div>
        <button type="submit" class="w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-800 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-lg">
         <i data-lucide="arrow-right-circle" class="w-5 h-5"></i> Masuk & Pilih Menu
@@ -102,25 +98,24 @@
           <p class="opacity-60 text-sm font-700" id="user-display-nip"></p>
         </div>
      </div>
-     <h1 class="text-2xl font-900 text-white text-center mb-6 fade-up">🎫 Pilih Kupon Menu</h1>
+     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">🎫 Pilih Kupon Menu</h2>
      <div class="grid grid-cols-2 gap-4 mb-6" id="menu-grid">
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('bakso')" style="animation-delay:0.1s">
-       <div class="text-5xl mb-2">🥣</div><h2 class="text-white font-800 text-lg">Bakso</h2><div id="status-bakso" class="mt-3"></div>
+       <div class="text-5xl mb-2">🥣</div><h1 class="text-white font-800 text-lg">Bakso</h1><div id="status-bakso" class="mt-3"></div>
       </div>
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('dimsum')" style="animation-delay:0.2s">
-       <div class="text-5xl mb-2">🥟</div><h2 class="text-white font-800 text-lg">Dimsum</h2><div id="status-dimsum" class="mt-3"></div>
+       <div class="text-5xl mb-2">🥟</div><h1 class="text-white font-800 text-lg">Dimsum</h1><div id="status-dimsum" class="mt-3"></div>
       </div>
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('es_gayung')" style="animation-delay:0.3s">
-       <div class="text-5xl mb-2">🥤</div><h2 class="text-white font-800 text-lg">Es Gayung</h2><div id="status-es_gayung" class="mt-3"></div>
+       <div class="text-5xl mb-2">🥤</div><h1 class="text-white font-800 text-lg">Es Gayung</h1><div id="status-es_gayung" class="mt-3"></div>
       </div>
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('sate')" style="animation-delay:0.4s">
-       <div class="text-5xl mb-2">🍢</div><h2 class="text-white font-800 text-lg">Sate & Ketan</h2><div id="status-sate" class="mt-3"></div>
-     
+       <div class="text-5xl mb-2">🍢</div><h1 class="text-white font-800 text-lg">Sate & Ketan</h1><div id="status-sate" class="mt-3"></div>
       </div>
      </div>
      <br>
-    <h6 class="text-2xl font-900 text-white text-center mb-6 fade-up">Berdo'a Sebelum Makan & Minum | Selamat Menikmati Makanan Dan Minumannya Ya 😊</h6>
-      </div>
+     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">Berdo'a Sebelum Makan & Minum | Selamat Menikmati Hidangan 😊</h2>
+    </div>
    </div>
 
    <div id="page-admin" class="min-h-full p-4 hidden">
@@ -179,6 +174,7 @@
            <th class="px-2 py-4 text-center">🥟</th>
            <th class="px-2 py-4 text-center">🥤</th>
            <th class="px-2 py-4 text-center">🍢</th>
+           <th class="px-4 py-4 text-center">Waktu</th>
            <th class="px-4 py-4 text-right">Info</th>
            <th class="px-4 py-4 text-center">Aksi</th>
           </tr>
@@ -206,20 +202,15 @@
   </div>
 
 <script>
-// --- CONFIGURATION ---
 const firebaseConfig = { databaseURL: "https://karina-13-default-rtdb.asia-southeast1.firebasedatabase.app/" };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 let currentUser = null;
 let lastLogCount = 0;
-let isAdmin = false; // Flag untuk suara notif
+let isAdmin = false;
 
-// --- UI LOGIC ---
-function closePopup() {
-    document.getElementById('popup-terms').classList.add('hidden');
-}
-
+function closePopup() { document.getElementById('popup-terms').classList.add('hidden'); }
 function showPage(id) {
     document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
@@ -234,7 +225,6 @@ function showToast(msg, type="success") {
     setTimeout(() => t.classList.add("hidden"), 4000);
 }
 
-// Suara Hanya Diputar Jika isAdmin = true
 function playSound() {
     if(!isAdmin) return; 
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -253,16 +243,13 @@ document.getElementById("form-login").onsubmit = (e) => {
     e.preventDefault();
     const nama = document.getElementById("inp-nama").value;
     const nip = document.getElementById("inp-nip").value;
-
     if (!nip.startsWith("000")) {
         showToast("NIP Tidak Terdaftar! Wajib diawali dengan angka 000", "error");
         return;
     }
-
     currentUser = { nama, nip };
     document.getElementById("user-display-name").textContent = nama;
     document.getElementById("user-display-nip").textContent = "NIP: " + nip;
-    
     db.ref('users/' + nip).on('value', snap => {
         const data = snap.val() || {};
         ['bakso','dimsum','es_gayung','sate'].forEach(m => {
@@ -280,7 +267,15 @@ async function tukar(menu) {
     if(snap.exists()) return showToast("Kupon ini sudah pernah ditukar!", "error");
     const menuNames = { bakso: "Bakso", dimsum: "Dimsum", es_gayung: "Es Gayung", sate: "Sate & Ketan" };
     const waktu = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-    db.ref('users/' + currentUser.nip).update({ [menu]: true, nama: currentUser.nama, nip: currentUser.nip });
+    
+    // UPDATE DATA: Tambahkan waktu_terakhir agar muncul di tabel admin
+    db.ref('users/' + currentUser.nip).update({ 
+        [menu]: true, 
+        nama: currentUser.nama, 
+        nip: currentUser.nip,
+        waktu_terakhir: waktu 
+    });
+    
     db.ref('logs').push({ nama: currentUser.nama, nip: currentUser.nip, menu: menuNames[menu], waktu: waktu, ts: firebase.database.ServerValue.TIMESTAMP });
     showToast(`✅ Berhasil Menukar ${menuNames[menu]}!`, "success");
 }
@@ -289,7 +284,7 @@ async function tukar(menu) {
 document.getElementById("btn-admin-nav").onclick = () => showPage('page-admin-login');
 document.getElementById("submit-admin").onclick = () => {
     if(document.getElementById("admin-pw").value === "hutrsukm13") {
-        isAdmin = true; // Aktifkan Notif Suara
+        isAdmin = true;
         showPage('page-admin');
         startAdminMonitor();
     } else { showToast("Password Salah!", "error"); }
@@ -301,7 +296,7 @@ function startAdminMonitor() {
         snap.forEach(c => { logs.unshift({ id: c.key, ...c.val() }); });
         if(logs.length > lastLogCount) {
             if(lastLogCount !== 0) {
-                playSound(); // Suara dipicu di sini
+                playSound();
                 showToast(`🔔 ${logs[0].nama} menukar ${logs[0].menu}`);
             }
             lastLogCount = logs.length;
@@ -345,6 +340,7 @@ function renderAdminTable() {
                     <td class="px-2 py-4 text-center">${ck(u.dimsum)}</td>
                     <td class="px-2 py-4 text-center">${ck(u.es_gayung)}</td>
                     <td class="px-2 py-4 text-center">${ck(u.sate)}</td>
+                    <td class="px-4 py-4 text-center text-xs font-mono text-yellow-200/80">${u.waktu_terakhir || '-'}</td>
                     <td class="px-4 py-4 text-right opacity-50 text-xs italic">Aktif</td>
                     <td class="px-4 py-4 text-center">
                         <button onclick="hapusUser('${u.nip}')" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">Reset</button>
@@ -377,7 +373,6 @@ window.resetSemuaData = () => {
     } else { alert("Password Salah!"); }
 };
 
-// Keamanan
 document.addEventListener("contextmenu", e => e.preventDefault());
 lucide.createIcons();
 </script>
