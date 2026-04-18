@@ -21,9 +21,44 @@
     .card-hover:hover { transform: translateY(-8px) scale(1.05); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .card-hover:hover { animation: neon-glow 1.5s ease-in-out infinite; }
     body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; background: #1a8a6e; }
+    /* Custom Scrollbar untuk Popup */
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #1a8a6e; border-radius: 10px; }
   </style>
  </head>
  <body class="h-full">
+
+  <div id="popup-terms" class="fixed inset-0 z-[10000] bg-green/70 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-black w-full max-w-2xl rounded-[2.5rem] p-8 shadow-2xl fade-up flex flex-col max-h-[90vh]">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="scroll-text" class="w-8 h-8"></i>
+        </div>
+        <h2 class="text-2xl font-900 text-red-800 uppercase tracking-tight">⚠️ Harap Diperhatikan</h2>
+        <p class="text-yellow-500 font-700 text-sm">Sebelum Penukaran Kupon</p>
+      </div>
+      
+      <div class="overflow-y-auto pr-2 custom-scroll space-y-4 text-yellow-700 font-700 text-sm md:text-base leading-relaxed">
+        <p>1. Kupon hanya berlaku saat acara HUT RSU Karina Medika berlangsung</p>
+        <p>2. Setiap pegawai mendapatkan 4 kupon digital makanan maupun minuman</p>
+        <p>3. Pegawai melakukan Scan QRCode dan masuk ke halaman website penukaran kupon</p>
+        <p>4. Isi data diri pegawai pada halaman website penukaran kupon dengan benar</p>
+        <p>5. Verifikasi kupon digital kepada panitia ybs untuk menukar kupon sesuai menunya</p>
+        <p>6. Pegawai yang telah menekan / klik menunya berarti kupon sudah berhasil ditukar</p>
+        <p>7. Jika semua menu telah dipilih maka berarti kupon telah habis & tidak bisa diakses kembali</p>
+        <p>8. Satu Nomor Induk Pegawai (NIP) hanya dapat menukar 1x disemua menunya</p>
+        <p>9. Jika pegawai tanpa disengaja menekan beberapa menunya tetapi pegawai belum siap untuk mengambil menunya maka panitia masih tetap menunggu untuk verifikasi langsung (kecuali terjadi sebelum hari-H)</p>
+        <p>10. Pegawai dapat menukarkan kupon digital sebanyak satu-persatu diwaktu yang berbeda</p>
+        <p>11. Pengambilan dapat diwakilkan temannya dengan perangkat yang berbeda dan teknis yang sama</p>
+      </div>
+
+      <button onclick="closePopup()" class="w-full mt-8 py-4 bg-[#1a8a6e] hover:bg-[#156d57] text-white font-900 rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+        SAYA MENGERTI & LANJUTKAN <i data-lucide="check-circle" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </div>
+
   <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a8a6e 0%, #1b7a8a 50%, #1a6e5a 100%);">
    
    <div id="toast" class="fixed top-4 right-4 z-[9999] hidden"></div>
@@ -43,14 +78,14 @@
        </div>
        <div>
         <label class="block text-white font-700 text-sm mb-1"><i data-lucide="hash" class="inline w-4 h-4 mr-1"></i>Nomor Induk Pegawai</label>
-        <input id="inp-nip" type="text" required maxlength="6" pattern="000\d{3}" inputmode="numeric" placeholder="Contoh: 000546" class="w-full px-4 py-3 rounded-xl bg-white/90 text-center tracking-widest text-lg font-bold outline-none focus:ring-2 focus:ring-yellow-400 transition">
+        <input id="inp-nip" type="text" required maxlength="6" pattern="000\d{3}" inputmode="numeric" placeholder="NIP 6 Angka" class="w-full px-4 py-3 rounded-xl bg-white/90 text-center tracking-widest text-lg font-bold outline-none focus:ring-2 focus:ring-yellow-400 transition">
        </div>
        <button type="submit" class="w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-800 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-lg">
         <i data-lucide="arrow-right-circle" class="w-5 h-5"></i> Masuk & Pilih Menu
        </button>
       </form>
       <button id="btn-admin-nav" class="w-full mt-3 py-2 bg-white/10 hover:bg-white/20 text-white/70 font-600 rounded-xl text-sm transition flex items-center justify-center gap-1">
-        <i data-lucide="shield" class="w-4 h-4"></i> Admin Panel
+        <i data-lucide="shield" class="w-4 h-4"></i>
       </button>
      </div>
     </div>
@@ -67,22 +102,25 @@
           <p class="opacity-60 text-sm font-700" id="user-display-nip"></p>
         </div>
      </div>
-     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">🎫 Pilih Kupon Menu</h2>
+     <h1 class="text-2xl font-900 text-white text-center mb-6 fade-up">🎫 Pilih Kupon Menu</h1>
      <div class="grid grid-cols-2 gap-4 mb-6" id="menu-grid">
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('bakso')" style="animation-delay:0.1s">
-       <div class="text-5xl mb-2">🥣</div><h3 class="text-white font-800 text-lg">Bakso</h3><div id="status-bakso" class="mt-3"></div>
+       <div class="text-5xl mb-2">🥣</div><h2 class="text-white font-800 text-lg">Bakso</h2><div id="status-bakso" class="mt-3"></div>
       </div>
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('dimsum')" style="animation-delay:0.2s">
-       <div class="text-5xl mb-2">🥟</div><h3 class="text-white font-800 text-lg">Dimsum</h3><div id="status-dimsum" class="mt-3"></div>
+       <div class="text-5xl mb-2">🥟</div><h2 class="text-white font-800 text-lg">Dimsum</h2><div id="status-dimsum" class="mt-3"></div>
       </div>
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('es_gayung')" style="animation-delay:0.3s">
-       <div class="text-5xl mb-2">🥤</div><h3 class="text-white font-800 text-lg">Es Gayung</h3><div id="status-es_gayung" class="mt-3"></div>
+       <div class="text-5xl mb-2">🥤</div><h2 class="text-white font-800 text-lg">Es Gayung</h2><div id="status-es_gayung" class="mt-3"></div>
       </div>
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('sate')" style="animation-delay:0.4s">
-       <div class="text-5xl mb-2">🍢</div><h3 class="text-white font-800 text-lg">Sate & Ketan</h3><div id="status-sate" class="mt-3"></div>
+       <div class="text-5xl mb-2">🍢</div><h2 class="text-white font-800 text-lg">Sate & Ketan</h2><div id="status-sate" class="mt-3"></div>
+     
       </div>
      </div>
-    </div>
+     <br>
+    <h6 class="text-2xl font-900 text-white text-center mb-6 fade-up">Berdo'a Sebelum Makan & Minum | Selamat Menikmati Makanan Dan Minumannya Ya 😊</h6>
+      </div>
    </div>
 
    <div id="page-admin" class="min-h-full p-4 hidden">
@@ -93,7 +131,7 @@
       </button>
       <div class="flex items-center gap-4">
         <button onclick="resetSemuaData()" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-red-500/30">
-            <i data-lucide="trash-2" class="w-4 h-4"></i> Bersihkan Semua Data
+            <i data-lucide="trash-2" class="w-4 h-4"></i> Reset Semua Data
         </button>
         <h2 class="text-xl font-900 text-white flex items-center gap-2"><i data-lucide="bar-chart-3" class="w-5 h-5"></i> Dashboard Admin</h2>
       </div>
@@ -101,34 +139,22 @@
      
      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
       <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center pop-in">
-       <div class="text-3xl mb-1">👥</div>
-       <p id="stat-unique" class="text-2xl font-900 text-white">0</p>
-       <p class="text-white/60 text-xs font-700 uppercase">Pegawai</p>
+       <div class="text-3xl mb-1">👥</div><p id="stat-unique" class="text-2xl font-900 text-white">0</p><p class="text-white/60 text-xs font-700 uppercase">Pegawai</p>
       </div>
       <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center pop-in" style="animation-delay:0.1s">
-       <div class="text-3xl mb-1">📊</div>
-       <p id="stat-total" class="text-2xl font-900 text-white">0</p>
-       <p class="text-white/60 text-xs font-700 uppercase">Total Kupon</p>
+       <div class="text-3xl mb-1">📊</div><p id="stat-total" class="text-2xl font-900 text-white">0</p><p class="text-white/60 text-xs font-700 uppercase">Total Kupon</p>
       </div>
       <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center pop-in" style="animation-delay:0.2s">
-       <div class="text-3xl mb-1">🥣</div>
-       <p id="stat-bakso" class="text-2xl font-900 text-white">0</p>
-       <p class="text-white/60 text-xs font-700 uppercase">Bakso</p>
+       <div class="text-3xl mb-1">🥣</div><p id="stat-bakso" class="text-2xl font-900 text-white">0</p><p class="text-white/60 text-xs font-700 uppercase">Bakso</p>
       </div>
       <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center pop-in" style="animation-delay:0.3s">
-       <div class="text-3xl mb-1">🥟</div>
-       <p id="stat-dimsum" class="text-2xl font-900 text-white">0</p>
-       <p class="text-white/60 text-xs font-700 uppercase">Dimsum</p>
+       <div class="text-3xl mb-1">🥟</div><p id="stat-dimsum" class="text-2xl font-900 text-white">0</p><p class="text-white/60 text-xs font-700 uppercase">Dimsum</p>
       </div>
       <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center pop-in" style="animation-delay:0.4s">
-       <div class="text-3xl mb-1">🥤</div>
-       <p id="stat-gayung" class="text-2xl font-900 text-white">0</p>
-       <p class="text-white/60 text-xs font-700 uppercase">Es Gayung</p>
+       <div class="text-3xl mb-1">🥤</div><p id="stat-gayung" class="text-2xl font-900 text-white">0</p><p class="text-white/60 text-xs font-700 uppercase">Es Gayung</p>
       </div>
       <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center pop-in" style="animation-delay:0.5s">
-       <div class="text-3xl mb-1">🍢</div>
-       <p id="stat-sate" class="text-2xl font-900 text-white">0</p>
-       <p class="text-white/60 text-xs font-700 uppercase">Sate</p>
+       <div class="text-3xl mb-1">🍢</div><p id="stat-sate" class="text-2xl font-900 text-white">0</p><p class="text-white/60 text-xs font-700 uppercase">Sate</p>
       </div>
      </div>
 
@@ -170,7 +196,7 @@
 
    <div id="page-admin-login" class="min-h-full flex items-center justify-center p-4 hidden">
     <div class="w-full max-w-sm fade-up bg-white p-8 rounded-3xl shadow-2xl">
-        <h2 class="text-2xl font-900 text-center mb-6">Admin Panel</h2>
+        <h2 class="text-2xl font-900 text-center mb-6 text-gray-800">Admin Panel</h2>
         <input id="admin-pw" type="password" class="w-full p-4 border rounded-2xl mb-4 text-center text-xl font-bold" placeholder="Password">
         <button id="submit-admin" class="w-full py-4 bg-blue-600 text-white font-900 rounded-2xl shadow-lg">Masuk</button>
         <button onclick="logout()" class="w-full mt-3 py-2 text-gray-400 font-700">Kembali</button>
@@ -181,25 +207,19 @@
 
 <script>
 // --- CONFIGURATION ---
-const firebaseConfig = {
-  databaseURL: "https://karina-13-default-rtdb.asia-southeast1.firebasedatabase.app/" 
-};
+const firebaseConfig = { databaseURL: "https://karina-13-default-rtdb.asia-southeast1.firebasedatabase.app/" };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 let currentUser = null;
 let lastLogCount = 0;
+let isAdmin = false; // Flag untuk suara notif
 
-// --- SECURITY & ANTI-REFRESH ---
-document.addEventListener("keydown", e => {
-  if (e.key === "PrintScreen" || e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 67 || e.keyCode === 73)) || (e.ctrlKey && e.keyCode === 82) || e.keyCode === 116) {
-    e.preventDefault();
-  }
-});
-document.addEventListener("contextmenu", e => e.preventDefault());
-window.addEventListener("beforeunload", e => { if (currentUser) { e.preventDefault(); e.returnValue = ""; } });
+// --- UI LOGIC ---
+function closePopup() {
+    document.getElementById('popup-terms').classList.add('hidden');
+}
 
-// --- UTILS ---
 function showPage(id) {
     document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
@@ -214,7 +234,9 @@ function showToast(msg, type="success") {
     setTimeout(() => t.classList.add("hidden"), 4000);
 }
 
+// Suara Hanya Diputar Jika isAdmin = true
 function playSound() {
+    if(!isAdmin) return; 
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -232,7 +254,6 @@ document.getElementById("form-login").onsubmit = (e) => {
     const nama = document.getElementById("inp-nama").value;
     const nip = document.getElementById("inp-nip").value;
 
-    // VALIDASI NIP: Wajib diawali dengan '000'
     if (!nip.startsWith("000")) {
         showToast("NIP Tidak Terdaftar! Wajib diawali dengan angka 000", "error");
         return;
@@ -257,10 +278,8 @@ document.getElementById("form-login").onsubmit = (e) => {
 async function tukar(menu) {
     const snap = await db.ref('users/' + currentUser.nip + '/' + menu).get();
     if(snap.exists()) return showToast("Kupon ini sudah pernah ditukar!", "error");
-
     const menuNames = { bakso: "Bakso", dimsum: "Dimsum", es_gayung: "Es Gayung", sate: "Sate & Ketan" };
     const waktu = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-
     db.ref('users/' + currentUser.nip).update({ [menu]: true, nama: currentUser.nama, nip: currentUser.nip });
     db.ref('logs').push({ nama: currentUser.nama, nip: currentUser.nip, menu: menuNames[menu], waktu: waktu, ts: firebase.database.ServerValue.TIMESTAMP });
     showToast(`✅ Berhasil Menukar ${menuNames[menu]}!`, "success");
@@ -270,6 +289,7 @@ async function tukar(menu) {
 document.getElementById("btn-admin-nav").onclick = () => showPage('page-admin-login');
 document.getElementById("submit-admin").onclick = () => {
     if(document.getElementById("admin-pw").value === "hutrsukm13") {
+        isAdmin = true; // Aktifkan Notif Suara
         showPage('page-admin');
         startAdminMonitor();
     } else { showToast("Password Salah!", "error"); }
@@ -281,7 +301,7 @@ function startAdminMonitor() {
         snap.forEach(c => { logs.unshift({ id: c.key, ...c.val() }); });
         if(logs.length > lastLogCount) {
             if(lastLogCount !== 0) {
-                playSound();
+                playSound(); // Suara dipicu di sini
                 showToast(`🔔 ${logs[0].nama} menukar ${logs[0].menu}`);
             }
             lastLogCount = logs.length;
@@ -325,7 +345,7 @@ function renderAdminTable() {
                     <td class="px-2 py-4 text-center">${ck(u.dimsum)}</td>
                     <td class="px-2 py-4 text-center">${ck(u.es_gayung)}</td>
                     <td class="px-2 py-4 text-center">${ck(u.sate)}</td>
-                    <td class="px-4 py-4 text-right opacity-50 text-xs italic">Sudah Login</td>
+                    <td class="px-4 py-4 text-right opacity-50 text-xs italic">Aktif</td>
                     <td class="px-4 py-4 text-center">
                         <button onclick="hapusUser('${u.nip}')" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">Reset</button>
                     </td>
@@ -357,6 +377,8 @@ window.resetSemuaData = () => {
     } else { alert("Password Salah!"); }
 };
 
+// Keamanan
+document.addEventListener("contextmenu", e => e.preventDefault());
 lucide.createIcons();
 </script>
 </body>
