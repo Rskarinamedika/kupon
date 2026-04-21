@@ -30,7 +30,7 @@
 
   <button onclick="toggleSidebar(true)" class="fixed left-0 top-1/2 -translate-y-1/2 bg-yellow-400 hover:bg-yellow-300 text-gray-900 px-3 py-6 rounded-r-2xl font-900 shadow-[5px_0_15px_rgba(0,0,0,0.3)] z-[60] transition-all active:scale-95 flex flex-col items-center gap-2">
     <i data-lucide="calendar-days" class="w-5 h-5"></i>
-    <span style="writing-mode: vertical-rl;" class="uppercase tracking-widest text-sm"></span>
+    <span style="writing-mode: vertical-rl;" class="uppercase tracking-widest text-sm">MENU</span>
   </button>
 
   <div id="sidebar-overlay" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[70] hidden opacity-0 transition-opacity duration-300"></div>
@@ -57,25 +57,39 @@
           <button onclick="previewImage('Rundownacara.jpg')" class="w-full py-2 mb-2 bg-yellow-400/20 hover:bg-yellow-400/40 text-yellow-400 rounded-xl text-xs font-900 transition flex items-center justify-center gap-2 border border-yellow-400/30">
             <i data-lucide="image" class="w-3 h-3"></i> LIHAT GAMBAR RUNDOWN
           </button>
-         
+          <div class="relative border-l-2 border-yellow-400/30 pl-4 space-y-6 text-sm">
+            <div><p class="text-yellow-400 font-900">08.00</p><p class="text-white font-700">Pembukaan</p></div>
+            <div><p class="text-white/60 font-700">08.15</p><p class="text-white font-700">Sambutan Direksi</p></div>
+            <div><p class="text-white/60 font-700">08.30</p><p class="text-white font-700">Sambutan Direktur</p></div>
+            <div><p class="text-white/60 font-700">08.45</p><p class="text-white font-700">Penampilan Peserta Lomba Hias Tumpeng</p></div>
+            <div><p class="text-white/60 font-700">09.00</p><p class="text-white font-700">Penampilan Hasil Kreasi Edukasi</p></div>
+            <div><p class="text-white/60 font-700">09.10</p><p class="text-white font-700">Penampilan Peserta Terbaik Foto Momen</p></div>
+            <div><p class="text-white/60 font-700">09.15</p><p class="text-white font-700">Perform Solo Vocal & Pembagian Doorprize 1</p></div>
+            <div><p class="text-white/60 font-700">09.25</p><p class="text-white font-700">Perform Solo Vocal 2</p></div>
+            <div class="bg-yellow-400/10 p-2 rounded-lg border border-yellow-400/20"><p class="text-yellow-400 font-900">09.30</p><p class="text-white font-900 italic">Penukaran Kupon Dibuka</p></div>
+            <div><p class="text-white/60 font-700">10.30</p><p class="text-white font-700">Penampilan Peserta Perlombaan Terbaik</p></div>
+            <div><p class="text-red-400 font-900">12.00</p><p class="text-white font-700 uppercase">Isoma</p></div>
+          </div>
         </div>
       </details>
 
-      <details class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+      <details class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden" open>
         <summary class="list-none p-4 flex items-center justify-between cursor-pointer hover:bg-white/10 transition">
           <div class="flex items-center gap-3 text-white font-800"><i data-lucide="trophy" class="w-5 h-5 text-yellow-400"></i> List Perlombaan</div>
           <i data-lucide="chevron-down" class="w-4 h-4 text-white/50 group-open:rotate-180 transition-transform"></i>
         </summary>
         <div class="p-4 pt-2 space-y-2 text-white/80 font-700 text-sm">
-            <div class="flex items-center gap-2 px-2 py-1"><i data-lucide="check" class="w-3 h-3 text-yellow-400"></i> Lomba Hias Tumpeng</div>
-            <div class="flex items-center gap-2 px-2 py-1"><i data-lucide="check" class="w-3 h-3 text-yellow-400"></i> Lomba Video Edukasi</div>
-            <div class="flex items-center gap-2 px-2 py-1"><i data-lucide="check" class="w-3 h-3 text-yellow-400"></i> Lomba Foto Momen</div>
+            <div onclick="previewImage('flyer2.jpg')" class="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/20 rounded-xl cursor-pointer transition border border-transparent hover:border-yellow-400/30">
+              <i data-lucide="image" class="w-3 h-3 text-yellow-400"></i> Lomba Hias Tumpeng
+            </div>
+            <div onclick="previewImage('flyer3.jpg')" class="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/20 rounded-xl cursor-pointer transition border border-transparent hover:border-yellow-400/30">
+              <i data-lucide="image" class="w-3 h-3 text-yellow-400"></i> Lomba Video Edukasi
+            </div>
+            <div onclick="previewImage('flyer.jpg')" class="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/20 rounded-xl cursor-pointer transition border border-transparent hover:border-yellow-400/30">
+              <i data-lucide="image" class="w-3 h-3 text-yellow-400"></i> Lomba Foto Momen
+            </div>
         </div>
       </details>
-
-      <button onclick="previewImage('Flyer.jpg')" class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition">
-        <i data-lucide="layout-panel-top" class="w-5 h-5 text-yellow-400"></i> Poster
-      </button>
       
       <button class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition"><i data-lucide="award" class="w-5 h-5 text-yellow-400"></i> Informasi Pemenang</button>
       <button class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition"><i data-lucide="image" class="w-5 h-5 text-yellow-400"></i> Galeri HUT</button>
@@ -130,8 +144,8 @@
   </div>
 
   <div id="image-viewer" class="fixed inset-0 z-[20000] bg-black/90 backdrop-blur-xl hidden flex items-center justify-center p-4" onclick="closeImageViewer()">
-    <div class="relative max-w-full max-h-full">
-      <button class="absolute -top-12 right-0 text-white hover:text-yellow-400 transition"><i data-lucide="x" class="w-8 h-8"></i></button>
+    <div class="relative max-w-full max-h-full" onclick="event.stopPropagation()">
+      <button onclick="closeImageViewer()" class="absolute -top-12 right-0 text-white hover:text-yellow-400 transition"><i data-lucide="x" class="w-8 h-8"></i></button>
       <img id="preview-img-src" src="" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl border border-white/20 object-contain">
     </div>
   </div>
@@ -142,9 +156,7 @@
    <div id="page-login" class="min-h-full flex items-center justify-center p-4">
     <div class="w-full max-w-md fade-up">
      <div class="text-center mb-6">
-      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-4 float-anim"><span class="text-4xl">
-        <img src="Logo.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim">
-      </span></div>
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-4 float-anim"><span class="text-4xl">🍽️</span></div>
       <h1 class="text-3xl font-900 text-white drop-shadow-lg">Penukaran Kupon</h1>
       <p class="text-white/80 mt-1 font-600">Masukkan Identitas Pegawai Dengan Benar</p>
      </div>
@@ -180,8 +192,7 @@
           <p class="opacity-60 text-sm font-700" id="user-display-nip"></p>
         </div>
      </div>
-     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">
-      <img src="LOGORS.png" alt="Logo"  class="w-24 h-24 mx-auto mb-4 object-contain float-anim">🍽️ Pilih Menu Yang Akan Ditukar</h2>
+     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">🎫 Pilih Kupon Menu</h2>
      <div class="grid grid-cols-2 gap-4 mb-6" id="menu-grid">
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('bakso')" style="animation-delay:0.1s">
        <div class="text-5xl mb-2">🥣</div><h1 class="text-white font-800 text-lg">Bakso</h1><div id="status-bakso" class="mt-3"></div>
