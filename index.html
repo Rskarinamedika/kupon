@@ -54,6 +54,9 @@
           <i data-lucide="chevron-down" class="w-4 h-4 text-white/50 group-open:rotate-180 transition-transform"></i>
         </summary>
         <div class="p-4 pt-0 space-y-4 border-t border-white/5 mt-2">
+          <button onclick="previewImage('Rundownacara.jpg')" class="w-full py-2 mb-2 bg-yellow-400/20 hover:bg-yellow-400/40 text-yellow-400 rounded-xl text-xs font-900 transition flex items-center justify-center gap-2 border border-yellow-400/30">
+            <i data-lucide="image" class="w-3 h-3"></i> LIHAT GAMBAR RUNDOWN
+          </button>
           <div class="relative border-l-2 border-yellow-400/30 pl-4 space-y-6 text-sm">
             <div><p class="text-yellow-400 font-900">08.00</p><p class="text-white font-700">Pembukaan</p></div>
             <div><p class="text-white/60 font-700">08.15</p><p class="text-white font-700">Sambutan Direksi</p></div>
@@ -82,6 +85,10 @@
         </div>
       </details>
 
+      <button onclick="previewImage('Flyer.jpg')" class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition">
+        <i data-lucide="layout-panel-top" class="w-5 h-5 text-yellow-400"></i> Poster
+      </button>
+      
       <button class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition"><i data-lucide="award" class="w-5 h-5 text-yellow-400"></i> Informasi Pemenang</button>
       <button class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition"><i data-lucide="image" class="w-5 h-5 text-yellow-400"></i> Galeri HUT</button>
       
@@ -111,9 +118,7 @@
   <div id="popup-terms" class="fixed inset-0 z-[10000] bg-green/70 backdrop-blur-md flex items-center justify-center p-4">
     <div class="bg-black w-full max-w-2xl rounded-[2.5rem] p-8 shadow-2xl fade-up flex flex-col max-h-[90vh]">
       <div class="text-center mb-6">
-        <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="scroll-text" class="w-8 h-8"></i>
-        </div>
+        <img src="Logo.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim">
         <h2 class="text-2xl font-900 text-red-800 uppercase tracking-tight">⚠️ Harap Diperhatikan</h2>
         <p class="text-yellow-500 font-700 text-sm">Sebelum Penukaran Kupon</p>
       </div>
@@ -136,13 +141,22 @@
     </div>
   </div>
 
+  <div id="image-viewer" class="fixed inset-0 z-[20000] bg-black/90 backdrop-blur-xl hidden flex items-center justify-center p-4" onclick="closeImageViewer()">
+    <div class="relative max-w-full max-h-full">
+      <button class="absolute -top-12 right-0 text-white hover:text-yellow-400 transition"><i data-lucide="x" class="w-8 h-8"></i></button>
+      <img id="preview-img-src" src="" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl border border-white/20 object-contain">
+    </div>
+  </div>
+
   <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a8a6e 0%, #1b7a8a 50%, #1a6e5a 100%);">
    <div id="toast" class="fixed top-4 right-4 z-[9999] hidden"></div>
 
    <div id="page-login" class="min-h-full flex items-center justify-center p-4">
     <div class="w-full max-w-md fade-up">
      <div class="text-center mb-6">
-      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-4 float-anim"><span class="text-4xl">🍽️</span></div>
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-4 float-anim"><span class="text-4xl">
+        <img src="Logo.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim">
+      </span></div>
       <h1 class="text-3xl font-900 text-white drop-shadow-lg">Penukaran Kupon</h1>
       <p class="text-white/80 mt-1 font-600">Masukkan Identitas Pegawai Dengan Benar</p>
      </div>
@@ -178,7 +192,8 @@
           <p class="opacity-60 text-sm font-700" id="user-display-nip"></p>
         </div>
      </div>
-     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">🎫 Pilih Kupon Menu</h2>
+     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">
+      <img src="LOGORS.png" alt="Logo"  class="w-24 h-24 mx-auto mb-4 object-contain float-anim">🍽️ Pilih Menu Yang Akan Ditukar</h2>
      <div class="grid grid-cols-2 gap-4 mb-6" id="menu-grid">
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('bakso')" style="animation-delay:0.1s">
        <div class="text-5xl mb-2">🥣</div><h1 class="text-white font-800 text-lg">Bakso</h1><div id="status-bakso" class="mt-3"></div>
@@ -308,6 +323,16 @@ function toggleSidebar(show) {
     lucide.createIcons();
 }
 
+function previewImage(src) {
+    document.getElementById('preview-img-src').src = src;
+    document.getElementById('image-viewer').classList.remove('hidden');
+    lucide.createIcons();
+}
+
+function closeImageViewer() {
+    document.getElementById('image-viewer').classList.add('hidden');
+}
+
 function startDigitalClock() {
     setInterval(() => {
         const now = new Date();
@@ -337,7 +362,6 @@ function playSound(type = "success") {
     const gain = ctx.createGain();
     osc.connect(gain); gain.connect(ctx.destination);
     
-    // Suara Gagal (Low Frequency) vs Sukses (High Frequency)
     if (type === "error") {
         osc.frequency.setValueAtTime(150, ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.5);
@@ -363,7 +387,6 @@ document.getElementById("form-login").onsubmit = async (e) => {
         return;
     }
 
-    // Cek apakah sudah menukar SEMUA kupon
     const snap = await db.ref('users/' + nip).once('value');
     const data = snap.val() || {};
     
@@ -480,7 +503,6 @@ function renderAdminTable() {
     });
 }
 
-// FUNGSI DOWNLOAD EXCEL (CSV)
 function downloadExcel() {
     db.ref('users').once('value', snap => {
         let csv = "Nama Pegawai,NIP,Bakso,Dimsum,Es Gayung,Sate & Ketan,Waktu Terakhir\n";
