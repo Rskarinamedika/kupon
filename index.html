@@ -411,7 +411,7 @@ document.getElementById("form-login").onsubmit = async (e) => {
     // VALIDASI WHITELIST NIP
     if (!whitelistNips.includes(nip)) {
         playSound("error");
-        showToast("NIP Anda Tidak Terdaftar Sebagai Peserta!", "error");
+        showToast("Maaf NIP Anda Tidak Terdaftar!", "Error");
         return;
     }
 
