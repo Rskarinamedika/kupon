@@ -157,7 +157,7 @@
     <div class="w-full max-w-md fade-up">
      <div class="text-center mb-6">
       <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-4 float-anim"><span class="text-4xl">
-        <img src="Logo.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim">
+         <img src="Logo.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim">
       </span></div>
       <h1 class="text-3xl font-900 text-white drop-shadow-lg">Penukaran Kupon</h1>
       <p class="text-white/80 mt-1 font-600">Masukkan Identitas Pegawai Dengan Benar</p>
@@ -170,7 +170,7 @@
        </div>
        <div>
         <label class="block text-white font-700 text-sm mb-1"><i data-lucide="hash" class="inline w-4 h-4 mr-1"></i>Nomor Induk Pegawai</label>
-        <input id="inp-nip" type="text" required maxlength="6" pattern="000\d{3}" inputmode="numeric" placeholder="NIP" class="w-full px-4 py-3 rounded-xl bg-white/90 text-gray-800 font-600 outline-none focus:ring-2 focus:ring-yellow-400 transition">
+        <input id="inp-nip" type="text" required maxlength="6" inputmode="numeric" placeholder="NIP" class="w-full px-4 py-3 rounded-xl bg-white/90 text-gray-800 font-600 outline-none focus:ring-2 focus:ring-yellow-400 transition">
        </div>
        <button type="submit" class="w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-800 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-lg">
         <i data-lucide="arrow-right-circle" class="w-5 h-5"></i> Masuk & Pilih Menu
@@ -194,8 +194,8 @@
           <p class="opacity-60 text-sm font-700" id="user-display-nip"></p>
         </div>
      </div>
-     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up"> 
-       <img src="LOGORS.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim">Pilih Kupon Menu 🍽️</h2>
+     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">
+      <img src="LOGORS.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim"> Pilih Kupon Menu 🍽️</h2>
      <div class="grid grid-cols-2 gap-4 mb-6" id="menu-grid">
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('bakso')" style="animation-delay:0.1s">
        <div class="text-5xl mb-2">🥣</div><h1 class="text-white font-800 text-lg">Bakso</h1><div id="status-bakso" class="mt-3"></div>
@@ -306,17 +306,45 @@ const firebaseConfig = { databaseURL: "https://karina-13-default-rtdb.asia-south
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// DAFTAR NIP YANG DIPERBOLEHKAN
+const whitelistNips = [
+    "000582", "000202", "000336", "000583", "000180", "000004", "000603", "000450", 
+    "000026", "000119", "000046", "000506", "000337", "000548", "000042", "000239", 
+    "000035", "000270", "000530", "000048", "000400", "000358", "000419", "000562", 
+    "000068", "000117", "000374", "000521", "000034", "000537", "000385", "000348", 
+    "000435", "000330", "000474", "000593", "000410", "000039", "000480", "000010", 
+    "000402", "000575", "000522", "000581", "000493", "000568", "000134", "000516", 
+    "000531", "000502", "000427", "000517", "000560", "000329", "000429", "000399", 
+    "000417", "000563", "000387", "000577", "000487", "000390", "000118", "000472", 
+    "000171", "000510", "000323", "000469", "000339", "000475", "000199", "000440", 
+    "000494", "000497", "000140", "000432", "000324", "000420", "000529", "000594", 
+    "000595", "000600", "000601", "000602", "000005", "000091", "000573", "000439", 
+    "000095", "000092", "000576", "000136", "000572", "000083", "000370", "000505", 
+    "000513", "000588", "000589", "000596", "000597", "000533", "000299", "000054", 
+    "000461", "000201", "000300", "000519", "000571", "000468", "000285", "000534", 
+    "000296", "000532", "000541", "000543", "000578", "000584", "000592", "000544", 
+    "000055", "000504", "000431", "000558", "000579", "000404", "000027", "000488", 
+    "000428", "000396", "000164", "000466", "000250", "000373", "000310", "000570", 
+    "000096", "000459", "000520", "000539", "000272", "000365", "000545", "000535", 
+    "000591", "000536", "000598", "000369", "000430", "000478", "000550", "000455", 
+    "000460", "000553", "000367", "000585", "000353", "000210", "000564", "000211", 
+    "000580", "000590", "000599", "000168", "000303", "000309", "000187", "000408", 
+    "000107", "000452", "000378", "000354", "000574", "000421", "000280", "000315", 
+    "000297", "000546", "000080", "000072", "000194", "000552", "100001", "100002", 
+    "100003", "100004", "100005", "100006", "100007", "100008", "100009", "100010", 
+    "100011", "100012"
+];
+
 let currentUser = null;
 let lastLogCount = 0;
 let isAdmin = false;
 
-// CEK SESI LOGIN SAAT HALAMAN DIMUAT
 document.addEventListener('DOMContentLoaded', () => {
     const savedUser = localStorage.getItem('karina_user_session');
     if (savedUser) {
         currentUser = JSON.parse(savedUser);
         initUserMenu(currentUser.nama, currentUser.nip);
-        document.getElementById('popup-terms').classList.add('hidden'); // Sembunyikan popup jika sudah login
+        document.getElementById('popup-terms').classList.add('hidden');
     }
 });
 
@@ -341,9 +369,7 @@ function previewImage(src) {
     lucide.createIcons();
 }
 
-function closeImageViewer() {
-    document.getElementById('image-viewer').classList.add('hidden');
-}
+function closeImageViewer() { document.getElementById('image-viewer').classList.add('hidden'); }
 
 function startDigitalClock() {
     setInterval(() => {
@@ -373,20 +399,18 @@ function playSound(type = "success") {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain); gain.connect(ctx.destination);
-    
     if (type === "error") {
         osc.frequency.setValueAtTime(150, ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.5);
     } else {
         osc.frequency.setValueAtTime(880, ctx.currentTime);
     }
-    
     gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
     osc.start(); osc.stop(ctx.currentTime + 0.5);
 }
 
 function logout() { 
-    localStorage.removeItem('karina_user_session'); // Hapus sesi saat logout
+    localStorage.removeItem('karina_user_session');
     location.reload(); 
 }
 
@@ -396,9 +420,10 @@ document.getElementById("form-login").onsubmit = async (e) => {
     const nama = document.getElementById("inp-nama").value;
     const nip = document.getElementById("inp-nip").value;
     
-    if (!nip.startsWith("000")) {
+    // VALIDASI WHITELIST NIP
+    if (!whitelistNips.includes(nip)) {
         playSound("error");
-        showToast("NIP Tidak Terdaftar! Wajib diawali dengan angka 000", "error");
+        showToast("NIP Anda Tidak Terdaftar Sebagai Peserta!", "error");
         return;
     }
 
@@ -412,14 +437,13 @@ document.getElementById("form-login").onsubmit = async (e) => {
     }
 
     currentUser = { nama, nip };
-    localStorage.setItem('karina_user_session', JSON.stringify(currentUser)); // Simpan sesi login
+    localStorage.setItem('karina_user_session', JSON.stringify(currentUser));
     initUserMenu(nama, nip);
 };
 
 function initUserMenu(nama, nip) {
     document.getElementById("user-display-name").textContent = nama;
     document.getElementById("user-display-nip").textContent = "NIP: " + nip;
-    
     db.ref('users/' + nip).on('value', snap => {
         const data = snap.val() || {};
         ['bakso','dimsum','es_gayung','sate'].forEach(m => {
@@ -472,7 +496,6 @@ function startAdminMonitor() {
         }
         renderAdminTable();
     });
-
     db.ref('users').on('value', snap => {
         let stats = { total:0, unique:0, bakso:0, dimsum:0, gayung:0, sate:0 };
         snap.forEach(c => {
@@ -528,18 +551,9 @@ function downloadExcel() {
         let csv = "Nama Pegawai,NIP,Bakso,Dimsum,Es Gayung,Sate & Ketan,Waktu Terakhir\n";
         snap.forEach(c => {
             const u = c.val();
-            const row = [
-                u.nama || "-",
-                u.nip || "-",
-                u.bakso ? "SUDAH" : "-",
-                u.dimsum ? "SUDAH" : "-",
-                u.es_gayung ? "SUDAH" : "-",
-                u.sate ? "SUDAH" : "-",
-                u.waktu_terakhir || "-"
-            ];
+            const row = [u.nama || "-", u.nip || "-", u.bakso ? "SUDAH" : "-", u.dimsum ? "SUDAH" : "-", u.es_gayung ? "SUDAH" : "-", u.sate ? "SUDAH" : "-", u.waktu_terakhir || "-"];
             csv += row.join(",") + "\n";
         });
-        
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
