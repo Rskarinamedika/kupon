@@ -57,7 +57,6 @@
           <button onclick="previewImage('Rundownacara.jpg')" class="w-full py-2 mb-2 bg-yellow-400/20 hover:bg-yellow-400/40 text-yellow-400 rounded-xl text-xs font-900 transition flex items-center justify-center gap-2 border border-yellow-400/30">
             <i data-lucide="image" class="w-3 h-3"></i> LIHAT GAMBAR RUNDOWN
           </button>
-          
         </div>
       </details>
 
@@ -121,7 +120,7 @@
         <p>6. Pegawai yang telah menekan / klik menunya berarti kupon sudah berhasil ditukar</p>
         <p>7. Jika semua menu telah dipilih maka berarti kupon telah habis & tidak bisa diakses kembali</p>
         <p>8. Satu Nomor Induk Pegawai (NIP) hanya dapat menukar 1x disemua menunya</p>
-        <p>9. Jika pegawai tanpa disengaja menekan beberapa menunya tetapi pegawai belum siap untuk mengambil menunya maka panitia masih tetap menunggu untuk verifikasi langsung (kecuali terjadi sebelum hari-H)</p>
+        <p>9. Jika pegawai tanpa disengaja menekan beberapa menunya tetapi pegawai belum siap untuk mengambil menunya maka panitia masih tetap menunggu untuk verifikasi langsung</p>
         <p>10. Pegawai dapat menukarkan kupon digital sebanyak satu-persatu diwaktu yang berbeda</p>
         <p>11. Pengambilan dapat diwakilkan temannya dengan perangkat yang berbeda dan teknis yang sama</p>
       </div>
@@ -144,9 +143,9 @@
    <div id="page-login" class="min-h-full flex items-center justify-center p-4">
     <div class="w-full max-w-md fade-up">
      <div class="text-center mb-6">
-      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-4 float-anim"><span class="text-4xl">
-         <img src="Logo.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim">
-      </span></div>
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-4 float-anim">
+         <img src="Logo.png" alt="Logo" class="w-24 h-24 mx-auto mb-4 object-contain">
+      </div>
       <h1 class="text-3xl font-900 text-white drop-shadow-lg">Penukaran Kupon</h1>
       <p class="text-white/80 mt-1 font-600">Masukkan Identitas Pegawai Dengan Benar</p>
      </div>
@@ -183,7 +182,7 @@
         </div>
      </div>
      <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">
-      <img src="LOGORS.png" alt="Logo HUT 13" class="w-24 h-24 mx-auto mb-4 object-contain float-anim"> Pilih Kupon Menu 🍽️</h2>
+      <img src="LOGORS.png" alt="Logo" class="w-24 h-24 mx-auto mb-4 object-contain float-anim"> Pilih Kupon Menu 🍽️</h2>
      <div class="grid grid-cols-2 gap-4 mb-6" id="menu-grid">
       <div class="menu-card card-hover bg-white/15 backdrop-blur-sm rounded-2xl p-5 border border-white/20 text-center cursor-pointer pop-in" onclick="tukar('bakso')" style="animation-delay:0.1s">
        <div class="text-5xl mb-2">🥣</div><h1 class="text-white font-800 text-lg">Bakso</h1><div id="status-bakso" class="mt-3"></div>
@@ -198,8 +197,7 @@
        <div class="text-5xl mb-2">🍢</div><h1 class="text-white font-800 text-lg">Sate & Ketan</h1><div id="status-sate" class="mt-3"></div>
       </div>
      </div>
-     <br>
-     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">Berdo'a Sebelum Makan & Minum | Selamat Menikmati Hidangan 😊</h2>
+     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">Selamat Menikmati Hidangan 😊</h2>
     </div>
    </div>
 
@@ -258,12 +256,11 @@
           <tr class="text-white/60 font-700 border-b border-white/10 bg-white/5">
            <th class="px-4 py-4 text-left">Nama Pegawai</th>
            <th class="px-4 py-4 text-center">NIP</th>
-           <th class="px-2 py-4 text-center">🥣</th>
-           <th class="px-2 py-4 text-center">🥟</th>
-           <th class="px-2 py-4 text-center">🥤</th>
-           <th class="px-2 py-4 text-center">🍢</th>
-           <th class="px-4 py-4 text-center">Waktu</th>
-           <th class="px-4 py-4 text-right">Info</th>
+           <th class="px-2 py-4 text-center">🥣 Bakso</th>
+           <th class="px-2 py-4 text-center">🥟 Dimsum</th>
+           <th class="px-2 py-4 text-center">🥤 Es</th>
+           <th class="px-2 py-4 text-center">🍢 Sate</th>
+           <th class="px-4 py-4 text-center">Waktu Akhir</th>
            <th class="px-4 py-4 text-center">Aksi</th>
           </tr>
          </thead>
@@ -290,11 +287,12 @@
   </div>
 
 <script>
+// --- CONFIG FIREBASE ---
 const firebaseConfig = { databaseURL: "https://karina-13-default-rtdb.asia-southeast1.firebasedatabase.app/" };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// DAFTAR NIP YANG DIPERBOLEHKAN
+// --- DAFTAR NIP WHITELIST ---
 const whitelistNips = [
     "000582", "000202", "000336", "000583", "000180", "000004", "000603", "000450", 
     "000026", "000119", "000046", "000506", "000337", "000548", "000042", "000239", 
@@ -318,7 +316,7 @@ const whitelistNips = [
     "000460", "000553", "000367", "000585", "000353", "000210", "000564", "000211", 
     "000580", "000590", "000599", "000168", "000303", "000309", "000187", "000408", 
     "000107", "000452", "000378", "000354", "000574", "000421", "000280", "000315", 
-    "000297", "000546", "000080", "000072", "000194", "000552", "0001" ,  "0003" , "0006" , "0009" , "0015" , "0017" , "0019" , "0020" , "0021" , "0022" , "0010" , "0011" , "0012" , "0013"
+    "000297", "000546", "000080", "000072", "000194", "000552", "0001" , "0003" , "0006" , "0009" , "0015" , "0017" , "0019" , "0020" , "0021" , "0022" , "0010" 
 ];
 
 let currentUser = null;
@@ -334,6 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// --- FUNGSI UTILITIES ---
 function toggleSidebar(show) {
     const sidebar = document.getElementById('sidebar-kegiatan');
     const overlay = document.getElementById('sidebar-overlay');
@@ -366,6 +365,7 @@ function startDigitalClock() {
 }
 
 function closePopup() { document.getElementById('popup-terms').classList.add('hidden'); }
+
 function showPage(id) {
     document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
@@ -406,7 +406,6 @@ document.getElementById("form-login").onsubmit = async (e) => {
     const nama = document.getElementById("inp-nama").value;
     const nip = document.getElementById("inp-nip").value;
     
-    // VALIDASI WHITELIST NIP
     if (!whitelistNips.includes(nip)) {
         playSound("error");
         showToast("Maaf NIP Anda Tidak Terdaftar !", "Error");
@@ -434,8 +433,9 @@ function initUserMenu(nama, nip) {
         const data = snap.val() || {};
         ['bakso','dimsum','es_gayung','sate'].forEach(m => {
             const el = document.getElementById('status-' + m);
+            // Menampilkan Jam pada tombol di menu user jika sudah ditukar
             el.innerHTML = data[m] ? 
-                '<span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-black">✅ SUDAH</span>' : 
+                `<span class="bg-green-500 text-white px-3 py-1 rounded-full text-[10px] font-black">✅ ${data[m]}</span>` : 
                 '<span class="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-black">TUKARKAN</span>';
         });
     });
@@ -445,17 +445,25 @@ function initUserMenu(nama, nip) {
 async function tukar(menu) {
     const snap = await db.ref('users/' + currentUser.nip + '/' + menu).get();
     if(snap.exists()) return showToast("Kupon ini sudah pernah ditukar!", "error");
+    
     const menuNames = { bakso: "Bakso", dimsum: "Dimsum", es_gayung: "Es Gayung", sate: "Sate & Ketan" };
+    // Mencatat jam penukaran
     const waktu = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
     
     db.ref('users/' + currentUser.nip).update({ 
-        [menu]: true, 
+        [menu]: waktu, 
         nama: currentUser.nama, 
         nip: currentUser.nip,
         waktu_terakhir: waktu 
     });
     
-    db.ref('logs').push({ nama: currentUser.nama, nip: currentUser.nip, menu: menuNames[menu], waktu: waktu, ts: firebase.database.ServerValue.TIMESTAMP });
+    db.ref('logs').push({ 
+        nama: currentUser.nama, 
+        nip: currentUser.nip, 
+        menu: menuNames[menu], 
+        waktu: waktu, 
+        ts: firebase.database.ServerValue.TIMESTAMP 
+    });
     showToast(`✅ Berhasil Menukar ${menuNames[menu]}!`, "success");
 }
 
@@ -510,18 +518,22 @@ function renderAdminTable() {
         snap.forEach(c => {
             const u = c.val();
             if ((u.nama||'').toLowerCase().includes(query) || (u.nip||'').includes(query)) {
-                const ck = v => v ? '<span class="text-green-400">✅</span>' : '<span class="opacity-10">—</span>';
+                
+                // MODIFIKASI: Menampilkan keterangan waktu di masing-masing menu
+                const checkWaktu = (v) => v ? 
+                    `<div class="flex flex-col items-center"><span class="text-green-400 text-[10px] font-black tracking-tighter">✅ ${v}</span></div>` : 
+                    '<span class="opacity-10 text-[10px]">—</span>';
+                
                 html += `<tr class="border-b border-white/5 hover:bg-white/5 transition">
-                    <td class="px-4 py-4">${u.nama}</td>
-                    <td class="px-4 py-4 text-center font-mono text-yellow-400">${u.nip}</td>
-                    <td class="px-2 py-4 text-center">${ck(u.bakso)}</td>
-                    <td class="px-2 py-4 text-center">${ck(u.dimsum)}</td>
-                    <td class="px-2 py-4 text-center">${ck(u.es_gayung)}</td>
-                    <td class="px-2 py-4 text-center">${ck(u.sate)}</td>
-                    <td class="px-4 py-4 text-center text-xs font-mono text-yellow-200/80">${u.waktu_terakhir || '-'}</td>
-                    <td class="px-4 py-4 text-right opacity-50 text-xs italic">Aktif</td>
+                    <td class="px-4 py-4 text-[11px]">${u.nama}</td>
+                    <td class="px-4 py-4 text-center font-mono text-yellow-400 text-[11px]">${u.nip}</td>
+                    <td class="px-2 py-4 text-center">${checkWaktu(u.bakso)}</td>
+                    <td class="px-2 py-4 text-center">${checkWaktu(u.dimsum)}</td>
+                    <td class="px-2 py-4 text-center">${checkWaktu(u.es_gayung)}</td>
+                    <td class="px-2 py-4 text-center">${checkWaktu(u.sate)}</td>
+                    <td class="px-4 py-4 text-center text-[10px] font-mono text-yellow-200/80">${u.waktu_terakhir || '-'}</td>
                     <td class="px-4 py-4 text-center">
-                        <button onclick="hapusUser('${u.nip}')" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">Reset</button>
+                        <button onclick="hapusUser('${u.nip}')" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded-lg text-[10px] font-bold transition">Reset</button>
                     </td>
                 </tr>`;
             }
@@ -534,17 +546,25 @@ function renderAdminTable() {
 
 function downloadExcel() {
     db.ref('users').once('value', snap => {
-        let csv = "Nama Pegawai,NIP,Bakso,Dimsum,Es Gayung,Sate & Ketan,Waktu Terakhir\n";
+        let csv = "Nama Pegawai,NIP,Bakso (Jam),Dimsum (Jam),Es Gayung (Jam),Sate & Ketan (Jam),Waktu Akhir\n";
         snap.forEach(c => {
             const u = c.val();
-            const row = [u.nama || "-", u.nip || "-", u.bakso ? "SUDAH" : "-", u.dimsum ? "SUDAH" : "-", u.es_gayung ? "SUDAH" : "-", u.sate ? "SUDAH" : "-", u.waktu_terakhir || "-"];
+            const row = [
+                `"${u.nama || '-'}"`, 
+                `'${u.nip || '-'}`, // Tanda kutip satu agar NIP tidak terbaca angka di Excel
+                u.bakso || "-", 
+                u.dimsum || "-", 
+                u.es_gayung || "-", 
+                u.sate || "-", 
+                u.waktu_terakhir || "-"
+            ];
             csv += row.join(",") + "\n";
         });
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", "Data_Penukaran_Kupon_HUT_RSKM.csv");
+        link.setAttribute("download", "Data_Kupon_HUT_Lengkap_Waktu.csv");
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
