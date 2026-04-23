@@ -79,6 +79,52 @@
       </details>
       
       <button class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition"><i data-lucide="award" class="w-5 h-5 text-yellow-400"></i> Informasi Pemenang</button>
+
+      <details class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+        <summary class="list-none p-4 flex items-center justify-between cursor-pointer hover:bg-white/10 transition">
+          <div class="flex items-center gap-3 text-white font-800"><i data-lucide="bar-chart-3" class="w-5 h-5 text-yellow-400"></i> Skor Perlombaan</div>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-white/50 group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="p-3 space-y-2">
+            <details class="group/sub bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+                <summary class="list-none p-3 flex items-center justify-between cursor-pointer hover:bg-white/10 transition text-sm text-white font-700">
+                    <span>Lomba Hias Tumpeng</span>
+                    <i data-lucide="chevron-down" class="w-3 h-3 text-white/50 group-open/sub:rotate-180 transition-transform"></i>
+                </summary>
+                <div class="p-2 space-y-1">
+                    <div onclick="previewScore('Hias Tumpeng', 'Bidang Umum')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Umum</div>
+                    <div onclick="previewScore('Hias Tumpeng', 'Bidang Pelayanan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Pelayanan</div>
+                    <div onclick="previewScore('Hias Tumpeng', 'Bidang Penunjang')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Penunjang</div>
+                    <div onclick="previewScore('Hias Tumpeng', 'Bidang Keperawatan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keperawatan</div>
+                </div>
+            </details>
+            <details class="group/sub bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+                <summary class="list-none p-3 flex items-center justify-between cursor-pointer hover:bg-white/10 transition text-sm text-white font-700">
+                    <span>Lomba Video Edukasi</span>
+                    <i data-lucide="chevron-down" class="w-3 h-3 text-white/50 group-open/sub:rotate-180 transition-transform"></i>
+                </summary>
+                <div class="p-2 space-y-1">
+                    <div onclick="previewScore('Video Edukasi', 'Bidang Umum')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Umum</div>
+                    <div onclick="previewScore('Video Edukasi', 'Bidang Pelayanan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Pelayanan</div>
+                    <div onclick="previewScore('Video Edukasi', 'Bidang Penunjang')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Penunjang</div>
+                    <div onclick="previewScore('Video Edukasi', 'Bidang Keperawatan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keperawatan</div>
+                </div>
+            </details>
+            <details class="group/sub bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+                <summary class="list-none p-3 flex items-center justify-between cursor-pointer hover:bg-white/10 transition text-sm text-white font-700">
+                    <span>Lomba Foto Momen</span>
+                    <i data-lucide="chevron-down" class="w-3 h-3 text-white/50 group-open/sub:rotate-180 transition-transform"></i>
+                </summary>
+                <div class="p-2 space-y-1">
+                    <div onclick="previewScore('Foto Momen', 'Bidang Umum')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Umum</div>
+                    <div onclick="previewScore('Foto Momen', 'Bidang Pelayanan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Pelayanan</div>
+                    <div onclick="previewScore('Foto Momen', 'Bidang Penunjang')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Penunjang</div>
+                    <div onclick="previewScore('Foto Momen', 'Bidang Keperawatan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keperawatan</div>
+                </div>
+            </details>
+        </div>
+      </details>
+
       <button class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition"><i data-lucide="image" class="w-5 h-5 text-yellow-400"></i> Galeri HUT</button>
       
       <details class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
@@ -134,6 +180,34 @@
     <div class="relative max-w-full max-h-full" onclick="event.stopPropagation()">
       <button onclick="closeImageViewer()" class="absolute -top-12 right-0 text-white hover:text-yellow-400 transition"><i data-lucide="x" class="w-8 h-8"></i></button>
       <img id="preview-img-src" src="" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl border border-white/20 object-contain">
+    </div>
+  </div>
+
+  <div id="score-viewer" class="fixed inset-0 z-[20000] bg-black/90 backdrop-blur-xl hidden flex items-center justify-center p-4" onclick="closeScoreViewer()">
+    <div class="bg-[#1a6e5a] w-full max-w-4xl rounded-3xl p-6 shadow-2xl border border-white/20 overflow-hidden flex flex-col max-h-[90vh] pop-in" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 id="score-title" class="text-xl font-900 text-white uppercase tracking-tight">PREVIEW SKOR</h2>
+                <p id="score-subtitle" class="text-yellow-400 text-xs font-800 tracking-widest"></p>
+            </div>
+            <button onclick="closeScoreViewer()" class="text-white/50 hover:text-white transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+        </div>
+        <div class="overflow-x-auto custom-scroll">
+            <table class="w-full text-[11px] md:text-sm text-left">
+                <thead class="text-yellow-400 font-900 border-b border-white/10 uppercase">
+                    <tr>
+                        <th class="px-4 py-3">Peserta</th>
+                        <th class="px-4 py-3 text-center">Jumlah Like IG</th>
+                        <th class="px-4 py-3 text-center">Design</th>
+                        <th class="px-4 py-3 text-center">Kekompakkan</th>
+                        <th class="px-4 py-3 text-center">Keterangan</th>
+                        <th class="px-4 py-3 text-center text-white bg-white/10 rounded-t-xl">Nilai Akhir</th>
+                    </tr>
+                </thead>
+                <tbody id="score-table-body" class="text-white font-600">
+                    </tbody>
+            </table>
+        </div>
     </div>
   </div>
 
@@ -197,7 +271,7 @@
        <div class="text-5xl mb-2">🍢</div><h1 class="text-white font-800 text-lg">Sate & Ketan</h1><div id="status-sate" class="mt-3"></div>
       </div>
      </div>
-     <h3 class="text-2xl font-900 text-white text-center mb-6 fade-up">Berdo'a Terlebih Dahulu Sebelum Makan dan Minum | Selamat Menikmati Hidangan 😊</h3>
+     <h2 class="text-2xl font-900 text-white text-center mb-6 fade-up">Selamat Menikmati Hidangan 😊</h2>
     </div>
    </div>
 
@@ -356,6 +430,38 @@ function previewImage(src) {
 
 function closeImageViewer() { document.getElementById('image-viewer').classList.add('hidden'); }
 
+// MODIFIKASI: Fungsi Preview Skor
+function previewScore(lomba, bidang) {
+    document.getElementById('score-title').textContent = lomba;
+    document.getElementById('score-subtitle').textContent = bidang;
+    
+    // Inject Data Dummy untuk Preview
+    const tbody = document.getElementById('score-table-body');
+    tbody.innerHTML = `
+        <tr class="border-b border-white/5 hover:bg-white/5 transition">
+            <td class="px-4 py-4">${bidang} - Tim A</td>
+            <td class="px-4 py-4 text-center">85</td>
+            <td class="px-4 py-4 text-center">90</td>
+            <td class="px-4 py-4 text-center">88</td>
+            <td class="px-4 py-4 text-center text-[10px] opacity-60 italic">Sangat Kreatif</td>
+            <td class="px-4 py-4 text-center bg-white/5 font-900 text-yellow-400">87.5</td>
+        </tr>
+        <tr class="border-b border-white/5 hover:bg-white/5 transition text-white/50">
+            <td class="px-4 py-4">${bidang} - Tim B</td>
+            <td class="px-4 py-4 text-center">70</td>
+            <td class="px-4 py-4 text-center">80</td>
+            <td class="px-4 py-4 text-center">75</td>
+            <td class="px-4 py-4 text-center text-[10px] italic">Cukup Baik</td>
+            <td class="px-4 py-4 text-center bg-white/5 font-900">75.0</td>
+        </tr>
+    `;
+    
+    document.getElementById('score-viewer').classList.remove('hidden');
+    lucide.createIcons();
+}
+
+function closeScoreViewer() { document.getElementById('score-viewer').classList.add('hidden'); }
+
 function startDigitalClock() {
     setInterval(() => {
         const now = new Date();
@@ -433,7 +539,6 @@ function initUserMenu(nama, nip) {
         const data = snap.val() || {};
         ['bakso','dimsum','es_gayung','sate'].forEach(m => {
             const el = document.getElementById('status-' + m);
-            // Menampilkan Jam pada tombol di menu user jika sudah ditukar
             el.innerHTML = data[m] ? 
                 `<span class="bg-green-500 text-white px-3 py-1 rounded-full text-[10px] font-black">✅ ${data[m]}</span>` : 
                 '<span class="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-black">TUKARKAN</span>';
@@ -447,7 +552,6 @@ async function tukar(menu) {
     if(snap.exists()) return showToast("Kupon ini sudah pernah ditukar!", "error");
     
     const menuNames = { bakso: "Bakso", dimsum: "Dimsum", es_gayung: "Es Gayung", sate: "Sate & Ketan" };
-    // Mencatat jam penukaran
     const waktu = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
     
     db.ref('users/' + currentUser.nip).update({ 
@@ -518,8 +622,6 @@ function renderAdminTable() {
         snap.forEach(c => {
             const u = c.val();
             if ((u.nama||'').toLowerCase().includes(query) || (u.nip||'').includes(query)) {
-                
-                // MODIFIKASI: Menampilkan keterangan waktu di masing-masing menu
                 const checkWaktu = (v) => v ? 
                     `<div class="flex flex-col items-center"><span class="text-green-400 text-[10px] font-black tracking-tighter">✅ ${v}</span></div>` : 
                     '<span class="opacity-10 text-[10px]">—</span>';
@@ -551,7 +653,7 @@ function downloadExcel() {
             const u = c.val();
             const row = [
                 `"${u.nama || '-'}"`, 
-                `'${u.nip || '-'}`, // Tanda kutip satu agar NIP tidak terbaca angka di Excel
+                `'${u.nip || '-'}`, 
                 u.bakso || "-", 
                 u.dimsum || "-", 
                 u.es_gayung || "-", 
