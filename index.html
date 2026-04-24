@@ -438,14 +438,14 @@ function previewScore(lomba, bidang) {
     let dummyScores = [];
     
     if (lomba === 'Hias Tumpeng') {
-        columns.push('Keunikan & Kreativitas', 'Kerapihan & Estetika', 'Penyajian & Penyampaian Konsep', 'Kesesuaian Tema', 'Kebersihan Area');
-        dummyScores = [90, 85, 88, 92, 85];
+        columns.push('Keunikan & Kreativitas (30%)', 'Kerapihan & Estetika (25%)', 'Penyajian & Konsep (20%)', 'Kesesuaian Tema (15%)', 'Kebersihan (10%)');
+        dummyScores = [0, 0, 0, 0, 0];
     } else if (lomba === 'Video Edukasi') {
-        columns.push('Kesesuaian Tema', 'Kreativitas', 'Dampak & Kejelasan Edukasi', 'Editing & Teknis Video', 'Jumlah Like');
-        dummyScores = [88, 90, 85, 87, 150];
+        columns.push('Kesesuaian Tema (25%)', 'Kreativitas (20%)', 'Dampak & Edukasi (20%)', 'Editing & Teknis (15%)', 'Jumlah Like (20%)');
+        dummyScores = [0, 0, 0, 0, 0];
     } else if (lomba === 'Foto Momen') {
-        columns.push('Kesesuaian Tema', 'Kualitas Teknis', 'Kreativitas & Angle Spot', 'Makna/Cerita', 'Jumlah Like');
-        dummyScores = [85, 88, 90, 86, 200];
+        columns.push('Kesesuaian Tema (25%)', 'Kualitas Teknis (15%)', 'Kreativitas & Angle (20%)', 'Makna/Cerita (20%)', 'Jumlah Like (20%)');
+        dummyScores = [0, 0, 0, 0, 0];
     }
     columns.push('Nilai Akhir');
 
@@ -455,7 +455,9 @@ function previewScore(lomba, bidang) {
         return `<th class="px-4 py-3 ${alignClass} ${highlightClass}">${col}</th>`;
     }).join('');
 
+    // Kalkulasi rata-rata (Dummy)
     const totalScore = (dummyScores.reduce((a, b) => a + b, 0) / dummyScores.length).toFixed(1);
+    
     tbody.innerHTML = `
         <tr class="border-b border-white/5 hover:bg-white/5 transition">
             <td class="px-4 py-4">${bidang} - Tim A</td>
