@@ -404,6 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
         initUserMenu(currentUser.nama, currentUser.nip);
         document.getElementById('popup-terms').classList.add('hidden');
     }
+ if (localStorage.getItem('rules_accepted')) {
+    document.getElementById('popup-terms').classList.add('hidden');
+}
 });
 
 // --- FUNGSI UTILITIES ---
