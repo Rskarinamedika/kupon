@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIVE SKOR JURI | HUT | RSU. KARINA MEDIKA</title>
+    <title>LIVE SKOR JURI | HUT | RS. KARINA MEDIKA</title>
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -22,27 +22,56 @@
 </head>
 <body class="min-h-screen p-4 md:p-8 text-slate-200">
 
-    <div class="max-w-7xl mx-auto fade-up">
-        <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-4 text-center md:text-left">
-            <div>
-                <h1 class="text-3xl font-900 text-white tracking-tight">HALAMAN <span class="text-yellow-400">JURI</span></h1>
-                <p class="text-slate-400 text-sm font-700">INPUT NILAI KRITERIA PERLOMBAAN HUT RSKM 13</p>
+    <div id="login-overlay" class="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/90 backdrop-blur-xl">
+        <div class="glass p-8 rounded-[2.5rem] w-full max-w-md text-center fade-up mx-4">
+            <div class="flex justify-center mb-6">
+                <div class="bg-white/10 p-4 rounded-2xl">
+                    <i data-lucide="shield-check" class="w-12 h-12 text-yellow-400"></i>
+                </div>
+            </div>
+            <h2 class="text-2xl font-900 text-white mb-2">LOGIN SEBAGAI JURI</h2>
+            <p class="text-slate-400 text-sm mb-8 font-700 uppercase tracking-widest">PENILAIAN PERLOMBAAN</p>
+            
+            <div class="space-y-4">
+                <input type="password" id="pass-input" placeholder="Masukkan Password Juri" 
+                    class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-center text-lg outline-none focus:border-yellow-400 transition-all font-800">
+                <button onclick="checkPass()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-900 py-4 rounded-2xl transition-all shadow-lg shadow-yellow-400/20 active:scale-95">
+                    MASUK KE PANEL
+                </button>
+                <p id="login-err" class="text-red-400 text-xs font-800 hidden animate-bounce">⚠️ PASSWORD SALAH!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content" class="max-w-7xl mx-auto fade-up hidden">
+        <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-6 text-center md:text-left">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="bg-white p-2 rounded-xl shadow-lg">
+                    <img src="https://rs-karinamedika.com/wp-content/uploads/2022/10/logo-rs-karina-medika.png" alt="Logo RSKM" class="h-10">
+                </div>
+                <div>
+                    <h1 class="text-3xl font-900 text-white tracking-tight leading-none">HALAMAN <span class="text-yellow-400">JURI</span></h1>
+                    <p class="text-slate-400 text-[10px] font-800 uppercase tracking-[0.2em] mt-1">Sistem Penilaian Perlombaan HUT</p>
+                </div>
             </div>
             <div class="flex items-center gap-4">
                 <div class="text-right">
                     <div id="live-clock" class="text-xl font-800 text-white">00:00:00</div>
-                    <div class="text-[10px] text-yellow-400/60 uppercase tracking-widest font-800">Sync Dashboard Aktif</div>
+                    <div class="text-[10px] text-yellow-400/60 uppercase tracking-widest font-800">Server Terkoneksi</div>
                 </div>
+                <button onclick="logout()" class="p-3 bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-400 rounded-xl transition-all">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                </button>
             </div>
         </div>
 
-        <div class="glass rounded-3xl p-6 mb-8">
-            <h3 class="text-lg font-800 text-white mb-4 flex items-center gap-2">
-                <i data-lucide="edit-3" class="text-yellow-400 w-5 h-5"></i> Form Penilaian Kriteria
+        <div class="glass rounded-3xl p-6 mb-8 border-l-4 border-l-yellow-400">
+            <h3 class="text-sm font-900 text-white mb-4 flex items-center gap-2 uppercase tracking-wider">
+                <i data-lucide="edit-3" class="text-yellow-400 w-4 h-4"></i> Format Penilaian Berdasarkan Kriteria
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="space-y-1">
-                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">1. Pilih Lomba</label>
+                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">Lomba</label>
                     <select id="juri-lomba" onchange="updateKriteriaOptions(); renderTable();" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition">
                         <option value="Hias Tumpeng" class="bg-slate-900">Hias Tumpeng</option>
                         <option value="Video Edukasi" class="bg-slate-900">Video Edukasi</option>
@@ -50,7 +79,7 @@
                     </select>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">2. Pilih Bidang</label>
+                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">Bidang</label>
                     <select id="juri-bidang" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition">
                         <option value="Bidang Umum & SDM" class="bg-slate-900">Umum & SDM</option>
                         <option value="Bidang Pelayanan & Penunjang" class="bg-slate-900">Pelayanan & Penunjang</option>
@@ -60,14 +89,13 @@
                     </select>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">3. Kriteria Nilai</label>
-                    <select id="juri-kriteria" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition">
-                        </select>
+                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">Kriteria</label>
+                    <select id="juri-kriteria" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition"></select>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">4. Nilai (0-100)</label>
+                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">Skor (0-100)</label>
                     <div class="flex gap-2">
-                        <input type="number" id="juri-nilai" placeholder="Nilai" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition">
+                        <input type="number" id="juri-nilai" placeholder="0" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition text-center font-800">
                         <button onclick="saveScore()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-900 px-6 rounded-xl transition-all shadow-lg shadow-yellow-400/20">
                             SIMPAN
                         </button>
@@ -76,11 +104,11 @@
             </div>
         </div>
 
-        <div class="glass rounded-3xl overflow-hidden">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center">
-                <h3 class="font-800 text-white uppercase tracking-tight" id="monitoring-title">Monitoring Skor</h3>
+        <div class="glass rounded-3xl overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <h3 class="font-800 text-white uppercase tracking-tight" id="monitoring-title">Tabel Skor</h3>
                 <span class="flex items-center gap-2 text-[10px] text-green-400 font-800 uppercase animate-pulse">
-                    <div class="w-2 h-2 bg-green-400 rounded-full"></div> Realtime View
+                    <div class="w-2 h-2 bg-green-400 rounded-full"></div> Sinkronisasi Aktif
                 </span>
             </div>
             <div class="overflow-x-auto custom-scroll">
@@ -92,10 +120,34 @@
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-full text-white font-900 opacity-0 transition-all pointer-events-none z-[100] border-yellow-400/30"></div>
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-full text-white font-900 opacity-0 transition-all pointer-events-none z-[300] border-yellow-400/30"></div>
 
     <script>
-        // Gunakan firebaseConfig yang sama dengan index.html Anda
+        // --- KONFIGURASI LOGIN ---
+        function checkPass() {
+            const input = document.getElementById('pass-input').value;
+            if(input === 'hutkarina') {
+                sessionStorage.setItem('juri_auth', 'true');
+                showPanel();
+            } else {
+                document.getElementById('login-err').classList.remove('hidden');
+            }
+        }
+
+        function showPanel() {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('main-content').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('juri_auth');
+            location.reload();
+        }
+
+        if(sessionStorage.getItem('juri_auth') === 'true') showPanel();
+
+        // --- KONFIGURASI FIREBASE ---
         const firebaseConfig = { 
             databaseURL: "https://karina-13-default-rtdb.asia-southeast1.firebasedatabase.app/" 
         };
@@ -122,7 +174,7 @@
         function updateKriteriaOptions() {
             const lomba = document.getElementById('juri-lomba').value;
             const select = document.getElementById('juri-kriteria');
-            // Filter: Nilai Akhir tidak bisa diinput manual
+            // Nilai Akhir dihilangkan dari input manual
             const kriteria = dataKriteria[lomba].filter(k => k !== 'Nilai Akhir');
             select.innerHTML = kriteria.map(k => `<option value="${k}" class="bg-slate-900">${k}</option>`).join('');
         }
@@ -141,33 +193,29 @@
             db.ref('skor_lomba/' + lomba + '/' + bidang + '/' + kriteria).set(nilai);
             db.ref('skor_lomba/' + lomba + '/' + bidang + '/lastUpdate').set(new Date().toLocaleTimeString());
             
-            showToast(`✅ Berhasil simpan ${kriteria}`);
+            showToast(`✅ Skor ${kriteria} Disimpan`);
             document.getElementById('juri-nilai').value = "";
         };
 
-        // Fungsi Reset per Bidang
         window.resetSkorBidang = (bidang) => {
             const lomba = document.getElementById('juri-lomba').value;
-            if(confirm(`Hapus semua nilai untuk ${bidang} di lomba ${lomba}?`)) {
+            if(confirm(`Reset semua skor untuk ${bidang} di lomba ${lomba}?`)) {
                 db.ref('skor_lomba/' + lomba + '/' + bidang).remove();
-                showToast(`🗑️ Nilai ${bidang} berhasil direset`);
+                showToast(`🗑️ Skor ${bidang} telah direset`);
             }
         };
 
-        // Fungsi Hitung Nilai Akhir Otomatis
         function hitungNilaiAkhir(skorBidang, kriteriaList) {
             let total = 0;
             kriteriaList.forEach(k => {
                 if (k === 'Nilai Akhir') return;
                 const nilai = parseFloat(skorBidang[k]) || 0;
-                // Ambil angka persentase dari teks kriteria, misal (30%) -> 30
                 const match = k.match(/\((\d+)%\)/);
                 if (match) {
-                    const bobot = parseInt(match[1]) / 100;
-                    total += nilai * bobot;
+                    total += nilai * (parseInt(match[1]) / 100);
                 }
             });
-            return total.toFixed(2).replace(/\.00$/, ''); // Hilangkan .00 jika bulat
+            return total.toFixed(2).replace(/\.00$/, '');
         }
 
         function renderTable() {
@@ -176,7 +224,7 @@
             
             const header = document.getElementById('juri-table-header');
             const kriteriaList = dataKriteria[lomba];
-            const columns = ['Peserta', ...kriteriaList, 'Aksi']; // Tambah kolom aksi
+            const columns = ['Bidang / Unit', ...kriteriaList, 'Aksi'];
             
             header.innerHTML = `<tr>${columns.map((col, idx) => `
                 <th class="px-6 py-4 ${idx > 0 ? 'text-center' : ''}">${col}</th>
@@ -191,10 +239,9 @@
 
                 bidangList.forEach(bidang => {
                     const skorBidang = data[bidang] || {};
-                    let rowHtml = `<tr class="hover:bg-white/5 border-b border-white/5">`;
-                    rowHtml += `<td class="px-6 py-4">${bidang}</td>`;
+                    let rowHtml = `<tr class="hover:bg-white/5 border-b border-white/5 transition-colors">`;
+                    rowHtml += `<td class="px-6 py-4 font-800 text-slate-300">${bidang}</td>`;
                     
-                    // Hitung otomatis Nilai Akhir untuk ditampilkan
                     const totalOtomatis = hitungNilaiAkhir(skorBidang, kriteriaList);
 
                     kriteriaList.forEach(k => {
@@ -203,32 +250,29 @@
                         
                         if (isNilaiAkhir) {
                             val = totalOtomatis > 0 ? totalOtomatis : '-';
-                            // Simpan otomatis ke Firebase agar sinkron dengan dashboard utama
-                            if (totalOtomatis > 0) {
-                                db.ref('skor_lomba/' + lomba + '/' + bidang + '/Nilai Akhir').set(totalOtomatis);
-                            }
+                            // Update otomatis ke DB agar dashboard utama juga berubah
+                            if (totalOtomatis > 0) db.ref('skor_lomba/' + lomba + '/' + bidang + '/Nilai Akhir').set(totalOtomatis);
                         } else {
                             val = skorBidang[k] || '-';
                         }
 
                         rowHtml += `<td class="px-6 py-4 text-center">
-                            <span class="${isNilaiAkhir ? 'text-yellow-400 font-900 scale-110 inline-block' : 'text-slate-400'}">
+                            <span class="${isNilaiAkhir ? 'text-yellow-400 font-900 text-lg' : 'text-slate-400'}">
                                 ${val}
                             </span>
                         </td>`;
                     });
                     
-                    // Tambahkan Tombol Reset
                     rowHtml += `<td class="px-6 py-4 text-center">
-                        <button onclick="resetSkorBidang('${bidang}')" class="p-2 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors group">
-                            <i data-lucide="rotate-ccw" class="w-4 h-4 group-hover:rotate-[-45deg] transition-transform"></i>
+                        <button onclick="resetSkorBidang('${bidang}')" class="p-2 hover:bg-red-500/20 text-red-400 rounded-lg transition-all group">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4 group-hover:rotate-[-90deg] transition-transform"></i>
                         </button>
                     </td>`;
 
                     rowHtml += `</tr>`;
                     tbody.innerHTML += rowHtml;
                 });
-                lucide.createIcons(); // Re-render icons untuk tombol baru
+                lucide.createIcons();
             });
         }
 
