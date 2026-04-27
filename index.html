@@ -3,6 +3,11 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="HUT | RSU. KARINA MEDIKA" />
+<meta property="og:description" content="HUT | 13" />
+<meta property="og:image" content="Logo.png" />
+<meta property="og:url" content="https://rsukm.web.id" />
+
   <title>TUKAR KUPON | HUT | RS. KARINA MEDIKA</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
@@ -24,6 +29,8 @@
     .custom-scroll::-webkit-scrollbar { width: 6px; }
     .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #1a8a6e; border-radius: 10px; }
+    .img-grid-thumb { transition: all 0.3s ease; filter: brightness(0.8); }
+    .img-grid-thumb:hover { filter: brightness(1.1); transform: scale(1.05); z-index: 10; }
   </style>
  </head>
  <body class="h-full">
@@ -128,7 +135,37 @@
         </div>
       </details>
 
-      <button class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 text-white font-800 flex items-center gap-3 transition"><i data-lucide="image" class="w-5 h-5 text-yellow-400"></i> Galeri HUT</button>
+      <details class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+        <summary class="list-none p-4 flex items-center justify-between cursor-pointer hover:bg-white/10 transition">
+          <div class="flex items-center gap-3 text-white font-800"><i data-lucide="image" class="w-5 h-5 text-yellow-400"></i> Galeri HUT</div>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-white/50 group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="p-3 space-y-3">
+            <div class="bg-black/20 p-3 rounded-xl border border-white/5">
+                <p class="text-yellow-400 text-[10px] font-900 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <i data-lucide="camera" class="w-3 h-3"></i> Dokumentasi Perlombaan
+                </p>
+                <details class="group/galeri bg-white/5 rounded-xl overflow-hidden border border-white/10">
+                    <summary class="list-none p-3 flex items-center justify-between cursor-pointer hover:bg-white/10 transition text-xs text-white font-800">
+                        <span>Galeri Lomba Hias Tumpeng</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 text-white/50 group-open/galeri:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="p-2 grid grid-cols-2 gap-2 bg-black/10">
+                        <div onclick="previewImage('peserta-tumpeng.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('peserta-tumpeng.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('peserta-tumpeng1.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('peserta-tumpeng1.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('peserta-tumpeng3.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('peserta-tumpeng3.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('peserta-tumpeng4.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('peserta-tumpeng4.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('tim-umum.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('tim-umum.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('tim-yanjangmed.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('tim-yanjangmed.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('tim-marketing.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('tim-marketing.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('tim-keuangan.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('tim-keuangan.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('tim-keperawatan.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('tim-keperawatan.jpg')" loading="lazy"></div>
+                        <div onclick="previewImage('peserta-panitia.jpg')" class="aspect-square bg-cover bg-center rounded-lg border border-white/10 cursor-pointer img-grid-thumb" style="background-image: url('peserta-panitia.jpg')" loading="lazy"></div>
+                    </div>
+                </details>
+            </div>
+        </div>
+      </details>
       
       <details class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
         <summary class="list-none p-4 flex items-center justify-between cursor-pointer hover:bg-white/10 transition">
@@ -441,21 +478,18 @@ function previewScore(lomba, bidang) {
     const headerRow = document.getElementById('score-table-header');
     const tbody = document.getElementById('score-table-body');
     
-    // Ambil daftar kriteria yang sesuai dengan lomba (sama dengan Juri.html)
     const listKriteria = {
         'Hias Tumpeng': ['Keunikan & Kreativitas (30%)', 'Kerapihan & Estetika (25%)', 'Penyajian & Konsep (20%)', 'Kesesuaian Tema (15%)', 'Kebersihan (10%)', 'Nilai Akhir'],
         'Video Edukasi': ['Kesesuaian Tema (25%)', 'Kreativitas (20%)', 'Dampak & Edukasi (20%)', 'Editing & Teknis (15%)', 'Jumlah Like (20%)', 'Nilai Akhir'],
         'Foto Momen': ['Kesesuaian Tema (25%)', 'Kualitas Teknis (15%)', 'Kreativitas & Angle (20%)', 'Makna/Cerita (20%)', 'Jumlah Like (20%)', 'Nilai Akhir']
     }[lomba];
 
-    // Buat Header Tabel
     headerRow.innerHTML = ['Peserta', ...listKriteria].map((col, index) => {
         let alignClass = index === 0 ? '' : 'text-center';
         let highlightClass = col === 'Nilai Akhir' ? 'text-yellow-400 bg-white/5' : '';
         return `<th class="px-4 py-3 ${alignClass} ${highlightClass}">${col}</th>`;
     }).join('');
 
-    // Listener Real-time
     db.ref('skor_lomba/' + lomba + '/' + bidang).on('value', (snap) => {
         const dataVal = snap.val() || {};
         
@@ -474,7 +508,6 @@ function previewScore(lomba, bidang) {
     document.getElementById('score-viewer').classList.remove('hidden');
     lucide.createIcons();
 }
-
 
 function closeScoreViewer() { document.getElementById('score-viewer').classList.add('hidden'); }
 
@@ -522,13 +555,12 @@ function logout() {
     location.reload(); 
 }
 
-// --- LOGIKA KARYAWAN (DIPERBARUI) ---
+// --- LOGIKA KARYAWAN ---
 document.getElementById("form-login").onsubmit = async (e) => {
     e.preventDefault();
     const nama = document.getElementById("inp-nama").value.trim();
     const nip = document.getElementById("inp-nip").value.trim();
     
-    // Validasi ketat hanya berdasarkan whitelistNips
     if (!whitelistNips.includes(nip)) {
         playSound("error");
         showToast("Maaf, NIP Tidak Terdaftar", "error");
