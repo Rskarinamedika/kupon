@@ -289,6 +289,13 @@
       </div>
      </div>
      
+<div class="mt-4 flex justify-end">
+    <a href="Juri.html" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white font-900 px-6 py-3 rounded-xl transition flex items-center gap-2 shadow-lg shadow-blue-900/20">
+        <i data-lucide="external-link" class="w-5 h-5"></i>
+        HALAMAN JURI
+    </a>
+</div>
+
      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
       <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center pop-in">
        <div class="text-3xl mb-1">👥</div><p id="stat-unique" class="text-2xl font-900 text-white">0</p><p class="text-white/60 text-xs font-700 uppercase">Pegawai</p>
@@ -434,41 +441,40 @@ function previewScore(lomba, bidang) {
     const headerRow = document.getElementById('score-table-header');
     const tbody = document.getElementById('score-table-body');
     
-    let columns = ['Peserta'];
-    let dummyScores = [];
-    
-    if (lomba === 'Hias Tumpeng') {
-        columns.push('Keunikan & Kreativitas (30%)', 'Kerapihan & Estetika (25%)', 'Penyajian & Konsep (20%)', 'Kesesuaian Tema (15%)', 'Kebersihan (10%)');
-        dummyScores = [0, 0, 0, 0, 0];
-    } else if (lomba === 'Video Edukasi') {
-        columns.push('Kesesuaian Tema (25%)', 'Kreativitas (20%)', 'Dampak & Edukasi (20%)', 'Editing & Teknis (15%)', 'Jumlah Like (20%)');
-        dummyScores = [0, 0, 0, 0, 0];
-    } else if (lomba === 'Foto Momen') {
-        columns.push('Kesesuaian Tema (25%)', 'Kualitas Teknis (15%)', 'Kreativitas & Angle (20%)', 'Makna/Cerita (20%)', 'Jumlah Like (20%)');
-        dummyScores = [0, 0, 0, 0, 0];
-    }
-    columns.push('Nilai Akhir');
+    // Ambil daftar kriteria yang sesuai dengan lomba (sama dengan Juri.html)
+    const listKriteria = {
+        'Hias Tumpeng': ['Keunikan & Kreativitas (30%)', 'Kerapihan & Estetika (25%)', 'Penyajian & Konsep (20%)', 'Kesesuaian Tema (15%)', 'Kebersihan (10%)', 'Nilai Akhir'],
+        'Video Edukasi': ['Kesesuaian Tema (25%)', 'Kreativitas (20%)', 'Dampak & Edukasi (20%)', 'Editing & Teknis (15%)', 'Jumlah Like (20%)', 'Nilai Akhir'],
+        'Foto Momen': ['Kesesuaian Tema (25%)', 'Kualitas Teknis (15%)', 'Kreativitas & Angle (20%)', 'Makna/Cerita (20%)', 'Jumlah Like (20%)', 'Nilai Akhir']
+    }[lomba];
 
-    headerRow.innerHTML = columns.map((col, index) => {
+    // Buat Header Tabel
+    headerRow.innerHTML = ['Peserta', ...listKriteria].map((col, index) => {
         let alignClass = index === 0 ? '' : 'text-center';
-        let highlightClass = col === 'Nilai Akhir' ? 'text-white bg-white/10 rounded-t-xl' : '';
+        let highlightClass = col === 'Nilai Akhir' ? 'text-yellow-400 bg-white/5' : '';
         return `<th class="px-4 py-3 ${alignClass} ${highlightClass}">${col}</th>`;
     }).join('');
 
-    // Kalkulasi rata-rata (Dummy)
-    const totalScore = (dummyScores.reduce((a, b) => a + b, 0) / dummyScores.length).toFixed(1);
-    
-    tbody.innerHTML = `
-        <tr class="border-b border-white/5 hover:bg-white/5 transition">
-            <td class="px-4 py-4">${bidang} - Tim A</td>
-            ${dummyScores.map(s => `<td class="px-4 py-4 text-center">${s}</td>`).join('')}
-            <td class="px-4 py-4 text-center bg-white/5 font-900 text-yellow-400">${totalScore}</td>
-        </tr>
-    `;
+    // Listener Real-time
+    db.ref('skor_lomba/' + lomba + '/' + bidang).on('value', (snap) => {
+        const dataVal = snap.val() || {};
+        
+        tbody.innerHTML = `
+            <tr class="border-b border-white/5 hover:bg-white/5 transition fade-up">
+                <td class="px-4 py-4 font-bold text-white">${bidang}</td>
+                ${listKriteria.map(k => {
+                    const val = dataVal[k] || '-';
+                    const isAkhir = k === 'Nilai Akhir';
+                    return `<td class="px-4 py-4 text-center ${isAkhir ? 'font-900 text-yellow-400 bg-yellow-400/5' : 'text-white/60'}">${val}</td>`;
+                }).join('')}
+            </tr>
+        `;
+    });
     
     document.getElementById('score-viewer').classList.remove('hidden');
     lucide.createIcons();
 }
+
 
 function closeScoreViewer() { document.getElementById('score-viewer').classList.add('hidden'); }
 
