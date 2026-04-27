@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIVE SKOR | HUT | RS. KARINA MEDIKA</title>
+    <title>INPUT SKOR JURI | RS. KARINA MEDIKA</title>
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -122,7 +122,8 @@
         function updateKriteriaOptions() {
             const lomba = document.getElementById('juri-lomba').value;
             const select = document.getElementById('juri-kriteria');
-            const kriteria = dataKriteria[lomba];
+            // Filter: Nilai Akhir tidak bisa diinput manual
+            const kriteria = dataKriteria[lomba].filter(k => k !== 'Nilai Akhir');
             select.innerHTML = kriteria.map(k => `<option value="${k}" class="bg-slate-900">${k}</option>`).join('');
         }
 
@@ -137,7 +138,6 @@
                 return;
             }
 
-            // Simpan ke path spesifik kriteria agar realtime ke index.html
             db.ref('skor_lomba/' + lomba + '/' + bidang + '/' + kriteria).set(nilai);
             db.ref('skor_lomba/' + lomba + '/' + bidang + '/lastUpdate').set(new Date().toLocaleTimeString());
             
@@ -145,13 +145,38 @@
             document.getElementById('juri-nilai').value = "";
         };
 
+        // Fungsi Reset per Bidang
+        window.resetSkorBidang = (bidang) => {
+            const lomba = document.getElementById('juri-lomba').value;
+            if(confirm(`Hapus semua nilai untuk ${bidang} di lomba ${lomba}?`)) {
+                db.ref('skor_lomba/' + lomba + '/' + bidang).remove();
+                showToast(`🗑️ Nilai ${bidang} berhasil direset`);
+            }
+        };
+
+        // Fungsi Hitung Nilai Akhir Otomatis
+        function hitungNilaiAkhir(skorBidang, kriteriaList) {
+            let total = 0;
+            kriteriaList.forEach(k => {
+                if (k === 'Nilai Akhir') return;
+                const nilai = parseFloat(skorBidang[k]) || 0;
+                // Ambil angka persentase dari teks kriteria, misal (30%) -> 30
+                const match = k.match(/\((\d+)%\)/);
+                if (match) {
+                    const bobot = parseInt(match[1]) / 100;
+                    total += nilai * bobot;
+                }
+            });
+            return total.toFixed(2).replace(/\.00$/, ''); // Hilangkan .00 jika bulat
+        }
+
         function renderTable() {
             const lomba = document.getElementById('juri-lomba').value;
             document.getElementById('monitoring-title').textContent = "Monitoring: " + lomba;
             
             const header = document.getElementById('juri-table-header');
             const kriteriaList = dataKriteria[lomba];
-            const columns = ['Peserta', ...kriteriaList];
+            const columns = ['Peserta', ...kriteriaList, 'Aksi']; // Tambah kolom aksi
             
             header.innerHTML = `<tr>${columns.map((col, idx) => `
                 <th class="px-6 py-4 ${idx > 0 ? 'text-center' : ''}">${col}</th>
@@ -169,19 +194,41 @@
                     let rowHtml = `<tr class="hover:bg-white/5 border-b border-white/5">`;
                     rowHtml += `<td class="px-6 py-4">${bidang}</td>`;
                     
+                    // Hitung otomatis Nilai Akhir untuk ditampilkan
+                    const totalOtomatis = hitungNilaiAkhir(skorBidang, kriteriaList);
+
                     kriteriaList.forEach(k => {
-                        const val = skorBidang[k] || '-';
+                        let val;
                         const isNilaiAkhir = k === 'Nilai Akhir';
+                        
+                        if (isNilaiAkhir) {
+                            val = totalOtomatis > 0 ? totalOtomatis : '-';
+                            // Simpan otomatis ke Firebase agar sinkron dengan dashboard utama
+                            if (totalOtomatis > 0) {
+                                db.ref('skor_lomba/' + lomba + '/' + bidang + '/Nilai Akhir').set(totalOtomatis);
+                            }
+                        } else {
+                            val = skorBidang[k] || '-';
+                        }
+
                         rowHtml += `<td class="px-6 py-4 text-center">
-                            <span class="${isNilaiAkhir ? 'text-yellow-400 font-900' : 'text-slate-400'}">
+                            <span class="${isNilaiAkhir ? 'text-yellow-400 font-900 scale-110 inline-block' : 'text-slate-400'}">
                                 ${val}
                             </span>
                         </td>`;
                     });
                     
+                    // Tambahkan Tombol Reset
+                    rowHtml += `<td class="px-6 py-4 text-center">
+                        <button onclick="resetSkorBidang('${bidang}')" class="p-2 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors group">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4 group-hover:rotate-[-45deg] transition-transform"></i>
+                        </button>
+                    </td>`;
+
                     rowHtml += `</tr>`;
                     tbody.innerHTML += rowHtml;
                 });
+                lucide.createIcons(); // Re-render icons untuk tombol baru
             });
         }
 
