@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INPUT SKOR JURI | RS. KARINA MEDIKA</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Nunito', sans-serif; }
+        body { background: radial-gradient(circle at top right, #1e293b, #0f172a, #020617); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .fade-up { animation: fadeUp 0.6s ease-out forwards; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #facc15; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 text-slate-200">
+
+    <div class="max-w-7xl mx-auto fade-up">
+        <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-4 text-center md:text-left">
+            <div>
+                <h1 class="text-3xl font-900 text-white tracking-tight">HALAMAN <span class="text-yellow-400">JURI</span></h1>
+                <p class="text-slate-400 text-sm font-700">INPUT NILAI KRITERIA PERLOMBAAN HUT RSKM 13</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <div id="live-clock" class="text-xl font-800 text-white">00:00:00</div>
+                    <div class="text-[10px] text-yellow-400/60 uppercase tracking-widest font-800">Sync Dashboard Aktif</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass rounded-3xl p-6 mb-8">
+            <h3 class="text-lg font-800 text-white mb-4 flex items-center gap-2">
+                <i data-lucide="edit-3" class="text-yellow-400 w-5 h-5"></i> Form Penilaian Kriteria
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">1. Pilih Lomba</label>
+                    <select id="juri-lomba" onchange="updateKriteriaOptions(); renderTable();" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition">
+                        <option value="Hias Tumpeng" class="bg-slate-900">Hias Tumpeng</option>
+                        <option value="Video Edukasi" class="bg-slate-900">Video Edukasi</option>
+                        <option value="Foto Momen" class="bg-slate-900">Foto Momen</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">2. Pilih Bidang</label>
+                    <select id="juri-bidang" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition">
+                        <option value="Bidang Umum & SDM" class="bg-slate-900">Umum & SDM</option>
+                        <option value="Bidang Pelayanan & Penunjang" class="bg-slate-900">Pelayanan & Penunjang</option>
+                        <option value="Bidang Marketing" class="bg-slate-900">Marketing</option>
+                        <option value="Bidang Keuangan" class="bg-slate-900">Keuangan</option>
+                        <option value="Bidang Keperawatan" class="bg-slate-900">Keperawatan</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">3. Kriteria Nilai</label>
+                    <select id="juri-kriteria" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition">
+                        </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-800 text-slate-500 uppercase ml-2">4. Nilai (0-100)</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="juri-nilai" placeholder="Nilai" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-yellow-400 transition">
+                        <button onclick="saveScore()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-900 px-6 rounded-xl transition-all shadow-lg shadow-yellow-400/20">
+                            SIMPAN
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass rounded-3xl overflow-hidden">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                <h3 class="font-800 text-white uppercase tracking-tight" id="monitoring-title">Monitoring Skor</h3>
+                <span class="flex items-center gap-2 text-[10px] text-green-400 font-800 uppercase animate-pulse">
+                    <div class="w-2 h-2 bg-green-400 rounded-full"></div> Realtime View
+                </span>
+            </div>
+            <div class="overflow-x-auto custom-scroll">
+                <table class="w-full text-[11px] md:text-sm text-left whitespace-nowrap">
+                    <thead id="juri-table-header" class="bg-white/5 text-yellow-400 uppercase font-900 tracking-wider"></thead>
+                    <tbody id="juri-table-body" class="divide-y divide-white/5 text-white font-600"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-full text-white font-900 opacity-0 transition-all pointer-events-none z-[100] border-yellow-400/30"></div>
+
+    <script>
+        // Gunakan firebaseConfig yang sama dengan index.html Anda
+        const firebaseConfig = { 
+            databaseURL: "https://karina-13-default-rtdb.asia-southeast1.firebasedatabase.app/" 
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const dataKriteria = {
+            'Hias Tumpeng': ['Keunikan & Kreativitas (30%)', 'Kerapihan & Estetika (25%)', 'Penyajian & Konsep (20%)', 'Kesesuaian Tema (15%)', 'Kebersihan (10%)', 'Nilai Akhir'],
+            'Video Edukasi': ['Kesesuaian Tema (25%)', 'Kreativitas (20%)', 'Dampak & Edukasi (20%)', 'Editing & Teknis (15%)', 'Jumlah Like (20%)', 'Nilai Akhir'],
+            'Foto Momen': ['Kesesuaian Tema (25%)', 'Kualitas Teknis (15%)', 'Kreativitas & Angle (20%)', 'Makna/Cerita (20%)', 'Jumlah Like (20%)', 'Nilai Akhir']
+        };
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.remove('opacity-0', 'translate-y-4');
+            t.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                t.classList.add('opacity-0', 'translate-y-4');
+                t.classList.remove('opacity-100', 'translate-y-0');
+            }, 3000);
+        }
+
+        function updateKriteriaOptions() {
+            const lomba = document.getElementById('juri-lomba').value;
+            const select = document.getElementById('juri-kriteria');
+            const kriteria = dataKriteria[lomba];
+            select.innerHTML = kriteria.map(k => `<option value="${k}" class="bg-slate-900">${k}</option>`).join('');
+        }
+
+        window.saveScore = () => {
+            const lomba = document.getElementById('juri-lomba').value;
+            const bidang = document.getElementById('juri-bidang').value;
+            const kriteria = document.getElementById('juri-kriteria').value;
+            const nilai = document.getElementById('juri-nilai').value;
+
+            if(!nilai || nilai < 0 || nilai > 100) {
+                showToast("⚠️ Masukkan nilai 0 - 100!");
+                return;
+            }
+
+            // Simpan ke path spesifik kriteria agar realtime ke index.html
+            db.ref('skor_lomba/' + lomba + '/' + bidang + '/' + kriteria).set(nilai);
+            db.ref('skor_lomba/' + lomba + '/' + bidang + '/lastUpdate').set(new Date().toLocaleTimeString());
+            
+            showToast(`✅ Berhasil simpan ${kriteria}`);
+            document.getElementById('juri-nilai').value = "";
+        };
+
+        function renderTable() {
+            const lomba = document.getElementById('juri-lomba').value;
+            document.getElementById('monitoring-title').textContent = "Monitoring: " + lomba;
+            
+            const header = document.getElementById('juri-table-header');
+            const kriteriaList = dataKriteria[lomba];
+            const columns = ['Peserta', ...kriteriaList];
+            
+            header.innerHTML = `<tr>${columns.map((col, idx) => `
+                <th class="px-6 py-4 ${idx > 0 ? 'text-center' : ''}">${col}</th>
+            `).join('')}</tr>`;
+
+            db.ref('skor_lomba/' + lomba).on('value', (snapshot) => {
+                const tbody = document.getElementById('juri-table-body');
+                tbody.innerHTML = "";
+                const data = snapshot.val() || {};
+
+                const bidangList = ["Bidang Umum & SDM", "Bidang Pelayanan & Penunjang", "Bidang Marketing", "Bidang Keuangan", "Bidang Keperawatan"];
+
+                bidangList.forEach(bidang => {
+                    const skorBidang = data[bidang] || {};
+                    let rowHtml = `<tr class="hover:bg-white/5 border-b border-white/5">`;
+                    rowHtml += `<td class="px-6 py-4">${bidang}</td>`;
+                    
+                    kriteriaList.forEach(k => {
+                        const val = skorBidang[k] || '-';
+                        const isNilaiAkhir = k === 'Nilai Akhir';
+                        rowHtml += `<td class="px-6 py-4 text-center">
+                            <span class="${isNilaiAkhir ? 'text-yellow-400 font-900' : 'text-slate-400'}">
+                                ${val}
+                            </span>
+                        </td>`;
+                    });
+                    
+                    rowHtml += `</tr>`;
+                    tbody.innerHTML += rowHtml;
+                });
+            });
+        }
+
+        setInterval(() => {
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('id-ID');
+        }, 1000);
+
+        updateKriteriaOptions();
+        renderTable();
+        lucide.createIcons();
+    </script>
+</body>
+</html>
