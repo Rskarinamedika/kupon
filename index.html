@@ -3,6 +3,18 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Title yang akan muncul sebagai judul pratinjau -->
+<meta property="og:title" content="HUT | 13 | RSU . KARINA MEDIKA" />
+
+<!-- Deskripsi singkat mengenai isi website -->
+<meta property="og:description" content="PORTAL HUT KE-13 | RSU . KARINA MEDIKA" />
+
+<!-- Gambar yang akan muncul (rekomendasi: 1200x630px) -->
+<meta property="og:image" content="Logo.png" />
+
+<!-- URL Halaman -->
+<meta property="og:url" content="https://www.rsukm.web.id" />
+
   <title>TUKAR KUPON | HUT | RS. KARINA MEDIKA</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
@@ -816,20 +828,25 @@ function renderAdminTable() {
         snap.forEach(c => {
             const u = c.val();
             if ((u.nama||'').toLowerCase().includes(query) || (u.nip||'').includes(query)) {
-                const checkWaktu = (v) => v ? 
-                    `<div class="flex flex-col items-center"><span class="text-green-400 text-[10px] font-black tracking-tighter">✅ ${v}</span></div>` : 
+                
+                // Helper untuk kolom menu dengan tombol reset individual
+                const checkWaktu = (v, m) => v ? 
+                    `<div class="flex flex-col items-center gap-1">
+                        <span class="text-green-400 text-[10px] font-black tracking-tighter">✅ ${v}</span>
+                        <button onclick="resetMenuUser('${u.nip}', '${m}')" class="bg-orange-500/20 hover:bg-orange-500 text-orange-400 hover:text-white px-2 py-0.5 rounded text-[8px] font-bold transition uppercase">Reset</button>
+                    </div>` : 
                     '<span class="opacity-10 text-[10px]">—</span>';
                 
                 html += `<tr class="border-b border-white/5 hover:bg-white/5 transition">
                     <td class="px-4 py-4 text-[11px]">${u.nama}</td>
                     <td class="px-4 py-4 text-center font-mono text-yellow-400 text-[11px]">${u.nip}</td>
-                    <td class="px-2 py-4 text-center">${checkWaktu(u.bakso)}</td>
-                    <td class="px-2 py-4 text-center">${checkWaktu(u.dimsum)}</td>
-                    <td class="px-2 py-4 text-center">${checkWaktu(u.es_gayung)}</td>
-                    <td class="px-2 py-4 text-center">${checkWaktu(u.sate)}</td>
+                    <td class="px-2 py-4 text-center">${checkWaktu(u.bakso, 'bakso')}</td>
+                    <td class="px-2 py-4 text-center">${checkWaktu(u.dimsum, 'dimsum')}</td>
+                    <td class="px-2 py-4 text-center">${checkWaktu(u.es_gayung, 'es_gayung')}</td>
+                    <td class="px-2 py-4 text-center">${checkWaktu(u.sate, 'sate')}</td>
                     <td class="px-4 py-4 text-center text-[10px] font-mono text-yellow-200/80">${u.waktu_terakhir || '-'}</td>
                     <td class="px-4 py-4 text-center">
-                        <button onclick="hapusUser('${u.nip}')" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded-lg text-[10px] font-bold transition">Reset</button>
+                        <button onclick="hapusUser('${u.nip}')" class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-3 py-1 rounded-lg text-[10px] font-bold transition">Reset Full</button>
                     </td>
                 </tr>`;
             }
@@ -871,8 +888,17 @@ function downloadExcel() {
 
 document.getElementById("search-input").oninput = () => renderAdminTable();
 
+// Fungsi untuk reset per menu tunggal
+window.resetMenuUser = (nip, menu) => {
+    const menuNames = { bakso: "Bakso", dimsum: "Dimsum", es_gayung: "Es Gayung", sate: "Sate & Ketan" };
+    if(confirm(`Reset kupon ${menuNames[menu]} untuk NIP ${nip}?`)) {
+        db.ref('users/' + nip + '/' + menu).remove();
+        showToast(`Kupon ${menuNames[menu]} NIP ${nip} direset!`, "success");
+    }
+};
+
 window.hapusUser = (nip) => {
-    if(confirm(`Hapus data NIP ${nip}?`)) {
+    if(confirm(`Hapus SEMUA data penukaran NIP ${nip}?`)) {
         db.ref('users/' + nip).remove();
         db.ref('logs').once('value', s => { s.forEach(c => { if(c.val().nip === nip) db.ref('logs/' + c.key).remove(); }); });
         showToast("Data NIP " + nip + " dibersihkan");
