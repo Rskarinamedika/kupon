@@ -3,11 +3,6 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:title" content="HUT | RSU. KARINA MEDIKA" />
-<meta property="og:description" content="HUT | 13" />
-<meta property="og:image" content="Logo.png" />
-<meta property="og:url" content="https://rsukm.web.id" />
-
   <title>TUKAR KUPON | HUT | RS. KARINA MEDIKA</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
@@ -29,8 +24,6 @@
     .custom-scroll::-webkit-scrollbar { width: 6px; }
     .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #1a8a6e; border-radius: 10px; }
-    .img-grid-thumb { transition: all 0.3s ease; filter: brightness(0.8); }
-    .img-grid-thumb:hover { filter: brightness(1.1); transform: scale(1.05); z-index: 10; }
   </style>
  </head>
  <body class="h-full">
@@ -130,6 +123,34 @@
                     <div onclick="previewScore('Foto Momen', 'Bidang Marketing')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Marketing</div>
                     <div onclick="previewScore('Foto Momen', 'Bidang Keuangan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keuangan</div>
                     <div onclick="previewScore('Foto Momen', 'Bidang Keperawatan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keperawatan</div>
+                </div>
+            </details>
+            
+            <details class="group/sub bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+                <summary class="list-none p-3 flex items-center justify-between cursor-pointer hover:bg-white/10 transition text-sm text-white font-700">
+                    <span>Lomba Kebersihan Dan Kerapihan Ruangan</span>
+                    <i data-lucide="chevron-down" class="w-3 h-3 text-white/50 group-open/sub:rotate-180 transition-transform"></i>
+                </summary>
+                <div class="p-2 space-y-1">
+                    <div onclick="previewScore('Kebersihan Dan Kerapihan Ruangan', 'Bidang Umum & SDM')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Umum & SDM</div>
+                    <div onclick="previewScore('Kebersihan Dan Kerapihan Ruangan', 'Bidang Pelayanan & Penunjang')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Pelayanan & Penunjang</div>
+                    <div onclick="previewScore('Kebersihan Dan Kerapihan Ruangan', 'Bidang Marketing')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Marketing</div>
+                    <div onclick="previewScore('Kebersihan Dan Kerapihan Ruangan', 'Bidang Keuangan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keuangan</div>
+                    <div onclick="previewScore('Kebersihan Dan Kerapihan Ruangan', 'Bidang Keperawatan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keperawatan</div>
+                </div>
+            </details>
+
+            <details class="group/sub bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+                <summary class="list-none p-3 flex items-center justify-between cursor-pointer hover:bg-white/10 transition text-sm text-white font-700">
+                    <span>Lomba Kebaya Nyentrik</span>
+                    <i data-lucide="chevron-down" class="w-3 h-3 text-white/50 group-open/sub:rotate-180 transition-transform"></i>
+                </summary>
+                <div class="p-2 space-y-1">
+                    <div onclick="previewScore('Kebaya Nyentrik', 'Bidang Umum & SDM')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Umum & SDM</div>
+                    <div onclick="previewScore('Kebaya Nyentrik', 'Bidang Pelayanan & Penunjang')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Pelayanan & Penunjang</div>
+                    <div onclick="previewScore('Kebaya Nyentrik', 'Bidang Marketing')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Marketing</div>
+                    <div onclick="previewScore('Kebaya Nyentrik', 'Bidang Keuangan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keuangan</div>
+                    <div onclick="previewScore('Kebaya Nyentrik', 'Bidang Keperawatan')" class="p-2 text-xs text-white/70 hover:text-white hover:bg-white/20 rounded-lg cursor-pointer transition border border-transparent hover:border-yellow-400/30">Bidang Keperawatan</div>
                 </div>
             </details>
         </div>
@@ -414,7 +435,7 @@ const db = firebase.database();
 
 // --- DAFTAR NIP WHITELIST ---
 const whitelistNips = [
-    "000582", "000202", "000336", "000583", "000180", "000004", "000603", "000450", 
+    "000202", "000336", "000583", "000180", "000004", "000603", "000450", 
     "000026", "000119", "000046", "000506", "000337", "000548", "000042", "000239", 
     "000035", "000270", "000530", "000048", "000400", "000358", "000419", "000562", 
     "000068", "000117", "000374", "000521", "000034", "000537", "000385", "000348", 
@@ -436,7 +457,7 @@ const whitelistNips = [
     "000460", "000553", "000367", "000585", "000353", "000210", "000564", "000211", 
     "000580", "000590", "000599", "000168", "000303", "000309", "000187", "000408", 
     "000107", "000452", "000378", "000354", "000574", "000421", "000280", "000315", 
-    "000297", "000546", "000080", "000072", "000194", "000552", "0001" , "0003" , "0006" , "0009" , "0015" , "0017" , "0019" , "0020" , "0021" , "0022" , "0010" , "0004" , "000001"
+    "000297", "000546", "000080", "000072", "000194", "000552", "0001" , "0003" , "0006" , "0009" , "0015" , "0017" , "0019" , "0020" , "0021" , "0022" , "0010" , "0004" , "000001" , "0111" , "0112" , "0113" , "0"
 ];
 
 let currentUser = null;
@@ -483,18 +504,23 @@ function previewScore(lomba, bidang) {
     const headerRow = document.getElementById('score-table-header');
     const tbody = document.getElementById('score-table-body');
     
+    // Ambil daftar kriteria (Diperbarui untuk mendukung lomba baru)
     const listKriteria = {
         'Hias Tumpeng': ['Keunikan & Kreativitas (30%)', 'Kerapihan & Estetika (25%)', 'Penyajian & Konsep (20%)', 'Kesesuaian Tema (15%)', 'Kebersihan (10%)', 'Nilai Akhir'],
         'Video Edukasi': ['Kesesuaian Tema (25%)', 'Kreativitas (20%)', 'Dampak & Edukasi (20%)', 'Editing & Teknis (15%)', 'Jumlah Like (20%)', 'Nilai Akhir'],
-        'Foto Momen': ['Kesesuaian Tema (25%)', 'Kualitas Teknis (15%)', 'Kreativitas & Angle (20%)', 'Makna/Cerita (20%)', 'Jumlah Like (20%)', 'Nilai Akhir']
+        'Foto Momen': ['Kesesuaian Tema (25%)', 'Kualitas Teknis (15%)', 'Kreativitas & Angle (20%)', 'Makna/Cerita (20%)', 'Jumlah Like (20%)', 'Nilai Akhir'],
+        'Kebersihan Dan Kerapihan Ruangan': ['Keunikan & Kreativitas (30%)', 'Kerapihan & Estetika (25%)', 'Penyajian & Konsep (20%)', 'Kesesuaian Tema (15%)', 'Kebersihan (10%)', 'Nilai Akhir'],
+        'Kebaya Nyentrik': ['Keunikan & Kreativitas (30%)', 'Kerapihan & Estetika (25%)', 'Penyajian & Konsep (20%)', 'Kesesuaian Tema (15%)', 'Kebersihan (10%)', 'Nilai Akhir']
     }[lomba];
 
+    // Buat Header Tabel
     headerRow.innerHTML = ['Peserta', ...listKriteria].map((col, index) => {
         let alignClass = index === 0 ? '' : 'text-center';
         let highlightClass = col === 'Nilai Akhir' ? 'text-yellow-400 bg-white/5' : '';
         return `<th class="px-4 py-3 ${alignClass} ${highlightClass}">${col}</th>`;
     }).join('');
 
+    // Listener Real-time
     db.ref('skor_lomba/' + lomba + '/' + bidang).on('value', (snap) => {
         const dataVal = snap.val() || {};
         
@@ -513,6 +539,7 @@ function previewScore(lomba, bidang) {
     document.getElementById('score-viewer').classList.remove('hidden');
     lucide.createIcons();
 }
+
 
 function closeScoreViewer() { document.getElementById('score-viewer').classList.add('hidden'); }
 
